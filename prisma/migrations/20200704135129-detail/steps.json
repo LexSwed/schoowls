@@ -1,0 +1,45 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Account",
+      "field": "active",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Account",
+      "field": "lastLoggedInAt",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "email",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "name",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "alias",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "phoneNumber",
+      "type": "String",
+      "arity": "Optional"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Account",
+      "field": "disabled",
+      "type": "Boolean",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Account",
+      "field": "lastActivityAt",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Account",
+      "field": "active"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Account",
+      "field": "lastLoggedInAt"
+    }
+  ]
+}

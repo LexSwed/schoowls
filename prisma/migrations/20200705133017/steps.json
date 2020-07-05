@@ -1,0 +1,36 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteModel",
+      "model": "Token"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "email"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "issuer"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "DeleteField",
+      "model": "UserDetails",
+      "field": "User"
+    }
+  ]
+}

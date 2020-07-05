@@ -1,0 +1,40 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteModel",
+      "model": "Account"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "disabled",
+      "type": "Boolean",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "registeredAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "lastActivityAt",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "account"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "User",
+      "field": "accountId"
+    }
+  ]
+}
