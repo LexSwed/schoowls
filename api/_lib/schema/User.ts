@@ -5,6 +5,9 @@ schema.objectType({
   definition(t) {
     t.model.id()
     t.model.email()
+    t.model.alias()
+    t.model.phoneNumber()
+    t.model.lastLoginAt()
   },
 })
 

@@ -6,7 +6,7 @@ module.exports = {
   printWidth: 120,
   overrides: [
     {
-      files: ['*.yml', '*.json'],
+      files: ['*.yml', '*.json', '*.prisma'],
       options: {},
     },
   ],

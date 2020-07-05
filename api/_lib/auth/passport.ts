@@ -4,7 +4,7 @@ import { isBefore } from 'date-fns'
 import { Strategy as MagicStrategy, MagicUser, DoneFunc } from 'passport-magic'
 import { User } from '@prisma/client'
 
-import { prisma } from '../../db'
+import { prisma } from '../db'
 
 const strategy = new MagicStrategy(async function (user, done) {
   const userMetadata = await magic.users.getMetadataByIssuer(user.issuer)
@@ -30,9 +30,6 @@ const signup = async (user: MagicUser, userMetadata: MagicUserMetadata, done: Do
       email: userMetadata.email,
       registeredAt: signUpDate,
       lastLoginAt: signUpDate,
-      details: {
-        create: {},
-      },
     },
   })
   done(null, user, { message: 'signup' })
