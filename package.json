@@ -16,26 +16,26 @@
     "db:save": "prisma migrate save --experimental",
     "db:up": "prisma migrate up --experimental",
     "db:migrate": "yarn db:save && yarn db:up",
-    "db:studio": "prisma studio --experimental",
-    "nexus:reflection": "nexus dev --reflection --entrypoint api/gql.ts",
-    "nexus:check": "nexus build --entrypoint api/gql.ts"
+    "db:studio": "prisma studio --experimental"
   },
   "dependencies": {
     "@magic-sdk/admin": "^1.2.2",
+    "cookie": "^0.4.1",
     "date-fns": "^2.14.0",
+    "jsonwebtoken": "^8.5.1",
     "next": "^9.4.4",
     "nexus": "^0.25.0",
     "nexus-plugin-prisma": "^0.16.1",
-    "passport": "^0.4.1",
-    "passport-magic": "^1.0.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@prisma-labs/prettier-config": "^0.1.0",
+    "@prisma/cli": "^2.1.3",
+    "@types/cookie": "^0.4.0",
     "@types/jest": "^26.0.3",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.0.14",
-    "@types/passport": "^1.0.3",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^3.5.0",

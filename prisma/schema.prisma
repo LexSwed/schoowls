@@ -17,7 +17,7 @@ model User {
     issuer         String    @unique
     email          String    @unique
     disabled       Boolean?  @default(false)
-    registeredAt   DateTime  @default(now())
-    lastLoginAt    DateTime?
-    lastActivityAt DateTime?
+    registeredAt   DateTime  @default(now()) // ISO Date
+    lastLoginAt    DateTime? // ISO Date
+    lastActivityAt DateTime? // ISO Date
 }

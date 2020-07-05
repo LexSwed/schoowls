@@ -1,32 +1,43 @@
-import { server } from 'nexus'
-import * as passport from 'passport'
-import { MagicUser } from 'passport-magic'
+import type { MagicUserMetadata } from '@magic-sdk/admin'
+import type { User } from '@prisma/client'
+
 import { magic } from './magic'
-import { PluginEntrypoint } from 'nexus/plugin'
+import { prisma } from '../db'
 
-/* Attach middleware to login endpoint */
-server.express.post('/login', (req, res) => {
-  return passport.authenticate('magic', (error, user, info) => {
-    if (info?.message === 'signup') {
-      res.redirect('/create')
-    }
-  })(req, res)
-})
+export const authorize = async (didToken: string) => {
+  const metadata = await magic.users.getMetadataByToken(didToken)
 
-server.express.post('/logout', async (req, res) => {
-  if (req.isAuthenticated()) {
-    await magic.users.logoutByIssuer((req.user as MagicUser).issuer)
-    req.logout()
-    return res.status(200).end()
+  const existingUser = await prisma.user.findOne({
+    where: {
+      issuer: metadata.issuer,
+    },
+  })
+
+  if (!existingUser) {
+    await signup(metadata)
   } else {
-    return res.status(401).end(`User is not logged in.`)
+    await login(existingUser)
   }
-})
 
-export const authPlugin: PluginEntrypoint = () => ({
-  packageJsonPath: require.resolve('../../package.json'),
-  runtime: {
-    module: require.resolve('./plugin'),
-    export: 'plugin',
-  },
-})
+  return metadata
+}
+
+const signup = async (metadata: MagicUserMetadata) => {
+  const signUpDate = new Date().toISOString()
+
+  await prisma.user.create({
+    data: {
+      issuer: metadata.issuer,
+      email: metadata.email,
+      registeredAt: signUpDate,
+      lastLoginAt: signUpDate,
+    },
+  })
+}
+
+const login = async (existingUser: User) => {
+  await prisma.user.update({
+    where: { id: existingUser.id },
+    data: { lastLoginAt: new Date().toISOString() },
+  })
+}

@@ -14,7 +14,8 @@
     "rootDir": ".",
     "isolatedModules": true,
     "noEmit": true,
-    "plugins": [{ "name": "nexus/typescript-language-service" }]
+    "plugins": [{ "name": "nexus/typescript-language-service" }],
+    "typeRoots": ["node_modules/@types", "./types", ".", "node_modules/.prisma/client"]
   },
   "exclude": ["node_modules"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "."]
