@@ -24,7 +24,7 @@ server.express.post('/logout', async (req, res) => {
 })
 
 export const authPlugin: PluginEntrypoint = () => ({
-  packageJsonPath: require.resolve('../../../package.json'),
+  packageJsonPath: require.resolve('../../package.json'),
   runtime: {
     module: require.resolve('./plugin'),
     export: 'plugin',

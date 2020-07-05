@@ -1,7 +1,8 @@
 import { use } from 'nexus'
 import { prisma } from 'nexus-plugin-prisma'
-
-// import { authPlugin } from './auth'
+import { authPlugin } from '../auth'
 
 use(prisma())
-// use(authPlugin())
+use(authPlugin())
+
+require('./User')

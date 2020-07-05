@@ -7,12 +7,10 @@ schema.objectType({
     t.model.email()
     t.model.alias()
     t.model.phoneNumber()
-    t.model.lastLoginAt()
   },
 })
 
-schema.extendType({
-  type: 'Query',
+schema.queryType({
   definition(t) {
     t.field('me', {
       type: 'User',
