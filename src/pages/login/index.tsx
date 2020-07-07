@@ -43,7 +43,13 @@ const Login = () => {
         body: JSON.stringify(body),
       })
       if (res.status === 200) {
-        Router.push('/')
+        const { user } = await res.json()
+
+        if (user?.name) {
+          Router.push('/')
+        } else {
+          Router.push('/create')
+        }
       } else {
         throw new Error(await res.text())
       }

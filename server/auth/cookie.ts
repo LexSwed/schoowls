@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { serialize, parse } from 'cookie'
-import { NowResponse } from '@vercel/node'
+import { NowResponse, NowRequest } from '@vercel/node'
+import { IncomingMessage } from 'http'
 
 export const encrypt = (data: string | object | Buffer, expiresIn = '1d') =>
   new Promise<string>((resolve, reject) =>
@@ -36,16 +37,25 @@ export function removeTokenCookie(res: NowResponse) {
   res.setHeader('Set-Cookie', cookie)
 }
 
-export function parseCookies(req) {
-  // For API Routes we don't need to parse the cookies.
-  if (req.cookies) return req.cookies
+export function parseCookies(req: IncomingMessage | NowRequest) {
+  if (isApiRequest(req)) return req.cookies
 
-  // For pages we do need to parse the cookies.
   const cookie = req.headers?.cookie
   return parse(cookie || '')
 }
 
-export function getTokenCookie(req) {
+export function getTokenCookie(req: IncomingMessage | NowRequest) {
   const cookies = parseCookies(req)
   return cookies[TOKEN_NAME]
+}
+
+export async function getCurrentUser(req: IncomingMessage | NowRequest): Promise<JWTUser | null> {
+  const token = getTokenCookie(req)
+  const data = await decrypt(token)
+
+  return data
+}
+
+function isApiRequest(req: IncomingMessage | NowRequest): req is NowRequest {
+  return Boolean((req as NowRequest).cookies)
 }

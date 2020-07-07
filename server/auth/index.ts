@@ -7,25 +7,25 @@ import { prisma } from '../db'
 export const authorize = async (didToken: string) => {
   const metadata = await magic.users.getMetadataByToken(didToken)
 
-  const existingUser = await prisma.user.findOne({
+  let existingUser = await prisma.user.findOne({
     where: {
       issuer: metadata.issuer,
     },
   })
 
   if (!existingUser) {
-    await signup(metadata)
+    existingUser = await signup(metadata)
   } else {
-    await login(existingUser)
+    existingUser = await login(existingUser)
   }
 
-  return metadata
+  return { session: metadata, user: existingUser }
 }
 
 const signup = async (metadata: MagicUserMetadata) => {
   const signUpDate = new Date().toISOString()
 
-  await prisma.user.create({
+  return await prisma.user.create({
     data: {
       issuer: metadata.issuer,
       email: metadata.email,
@@ -36,7 +36,7 @@ const signup = async (metadata: MagicUserMetadata) => {
 }
 
 const login = async (existingUser: User) => {
-  await prisma.user.update({
+  return await prisma.user.update({
     where: { id: existingUser.id },
     data: { lastLoginAt: new Date().toISOString() },
   })
