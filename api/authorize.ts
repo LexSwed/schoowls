@@ -10,10 +10,10 @@ export default async function login(req: NowRequest, res: NowResponse) {
       return res.status(401).end()
     }
 
-    const session = authorize(didToken)
-
+    const session = await authorize(didToken)
     const token = await encrypt(session)
     setTokenCookie(res, token)
+
     res.status(200).send({ done: true })
   } catch (error) {
     res.status(error.status || 500).end(error.message)

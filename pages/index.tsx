@@ -6,7 +6,7 @@ function HomePage() {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  console.log(ctx)
+  console.log(ctx.req.headers.cookie)
 
   return { props: {} }
 }
