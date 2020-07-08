@@ -14,7 +14,7 @@ export const decrypt = (token: string) =>
     jwt.verify(token, process.env.JWT_SECRET, {}, (err, data) => (err ? reject(err) : resolve(data)))
   )
 
-const TOKEN_NAME = 'token'
+const TOKEN_NAME = 'schoowls_token'
 const MAX_AGE = 60 * 60 * 24 * 3 // 3 days
 
 export function setTokenCookie(res: NowResponse, token: string) {
@@ -50,7 +50,7 @@ export function getTokenCookie(req: IncomingMessage | NowRequest) {
   return cookies[TOKEN_NAME]
 }
 
-export async function getCurrentUser(req: IncomingMessage | NowRequest): Promise<MagicUserMetadata | null> {
+export async function encryptToken(req: IncomingMessage | NowRequest): Promise<MagicUserMetadata | null> {
   const token = getTokenCookie(req)
   const data = await decrypt(token)
 

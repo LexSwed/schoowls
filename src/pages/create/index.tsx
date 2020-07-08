@@ -54,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = withAuth(async (ctx) => {
   try {
     const user = await getUserFromRequest(ctx.req)
 
-    if (user.name) {
+    if (user?.details.name) {
       ctx.res.writeHead(302, { Location: '/' })
       ctx.res.end()
 

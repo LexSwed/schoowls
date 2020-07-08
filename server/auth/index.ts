@@ -1,30 +1,36 @@
 import type { MagicUserMetadata } from '@magic-sdk/admin'
-import type { User } from '@prisma/client'
+import type { User, UserDetails } from '@prisma/client'
 import { IncomingMessage } from 'http'
 
 import { magic } from './magic'
 import { prisma } from '../db'
-import { getCurrentUser } from './cookie'
+import { encryptToken } from './cookie'
+import { getUserDetails } from '../db'
 
-export const authorize = async (didToken: string) => {
+export const authorize = async (didToken: string, userDetails: Partial<UserDetails>) => {
   const metadata = await magic.users.getMetadataByToken(didToken)
 
   let existingUser = await prisma.user.findOne({
     where: {
       issuer: metadata.issuer,
     },
+    select: {
+      id: true,
+    },
   })
 
   if (!existingUser) {
-    existingUser = await signup(metadata)
+    await signup(metadata, userDetails)
   } else {
-    existingUser = await login(existingUser)
+    await login(existingUser)
   }
 
-  return { session: metadata, user: existingUser }
+  const user: UserAuth = await getUserDetails({ issuer: metadata.issuer })
+
+  return { session: metadata, user }
 }
 
-const signup = async (metadata: MagicUserMetadata) => {
+const signup = async (metadata: MagicUserMetadata, { timeZone }: Partial<UserDetails>) => {
   const signUpDate = new Date().toISOString()
 
   return await prisma.user.create({
@@ -33,11 +39,16 @@ const signup = async (metadata: MagicUserMetadata) => {
       email: metadata.email,
       registeredAt: signUpDate,
       lastLoginAt: signUpDate,
+      details: {
+        create: {
+          timeZone,
+        },
+      },
     },
   })
 }
 
-const login = async (existingUser: User) => {
+const login = async (existingUser: { id: User['id'] }) => {
   return await prisma.user.update({
     where: { id: existingUser.id },
     data: { lastLoginAt: new Date().toISOString() },
@@ -46,16 +57,16 @@ const login = async (existingUser: User) => {
 
 export async function isLoggedIn(req: IncomingMessage) {
   try {
-    return Boolean(await getCurrentUser(req))
+    return Boolean(await encryptToken(req))
   } finally {
     return false
   }
 }
 
-export async function getUserFromRequest(req: IncomingMessage) {
-  const data = await getCurrentUser(req)
+export async function getUserFromRequest(req: IncomingMessage): Promise<UserAuth> {
+  const data = await encryptToken(req)
 
-  const user = await prisma.user.findOne({ where: { email: data.email } })
+  const user = await getUserDetails({ email: data.email })
 
   return JSON.parse(JSON.stringify(user)) // next.js requires Date to be String
 }

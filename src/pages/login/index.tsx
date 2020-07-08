@@ -39,7 +39,7 @@ const Login = () => {
     try {
       const user = await magicLogin(e.currentTarget.email.value)
 
-      if (user?.name) {
+      if (user?.details.name) {
         Router.push('/')
       } else {
         Router.push('/create')

@@ -1,11 +1,11 @@
 import { Magic } from 'magic-sdk'
-import { User } from '@prisma/client'
 
-export async function magicLogin(email: string): Promise<User> | null {
+export async function magicLogin(email: string): Promise<UserAuth> | null {
   const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY)
 
   const body = {
     email,
+    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   }
   const didToken = await magic.auth.loginWithMagicLink(body)
   const res = await fetch('/api/authorize', {
