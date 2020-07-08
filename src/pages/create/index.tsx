@@ -1,35 +1,81 @@
-import React from 'react'
-import Router from 'next/router'
+import React, { useState } from 'react'
 import { GetServerSideProps } from 'next'
 import type { User } from '@prisma/client'
+import { Box, Stack, Heading, FormControl, FormLabel, Input } from '@chakra-ui/core'
+import styled from '@emotion/styled'
 
-import CreateAccount from './CreateAccount'
-import { getCurrentUser } from '../../server/auth/cookie'
-import { prisma } from '../../server/db'
+import { getUserFromRequest } from '../../../server/auth'
+import { withAuth } from '../../lib/withAuth'
+import { FullsizeContainer } from '../../components/FullsizeContainer'
 
-const Create: React.FC<{ user: User }> = ({ user }) => {
-  if (!user) {
-    Router.push('/login')
-  }
+// TODO: move to DB
+const dbClasses = ['Math', 'Science', 'Literature', 'Language']
 
-  if (!user.name) {
-    return <CreateAccount user={user} />
-  }
+const Image = styled.img`
+  height: 200px;
+`
 
-  Router.push('/')
+const CreatePage: React.FC<{ user: User }> = ({ user }) => {
+  const [name, setName] = useState('')
+  const [classes, setClasses] = useState([])
 
-  return <div>Create account</div>
+  return (
+    <FullsizeContainer>
+      <Box width={600}>
+        <Stack>
+          <Heading>Welcome! Let's fill in some info</Heading>
+          <Stack isInline spacing={8} align="center">
+            <Stack>
+              <FormControl>
+                <FormLabel htmlFor="full-name">Email</FormLabel>
+                <Input
+                  id="full-name"
+                  name="name"
+                  value={name}
+                  placeholder="Minerva McGonagall"
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </FormControl>
+              {/* <Select onSelect={(c) => setClasses([...classes, c])}>
+                  {dbClasses.map((cl) => (
+                    <Option value={cl}>{cl}</Option>
+                  ))}
+                </Select> */}
+            </Stack>
+            <Image src="/images/teaching.svg" alt="Teacher with a board behind" />
+          </Stack>
+        </Stack>
+      </Box>
+    </FullsizeContainer>
+  )
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const data = await getCurrentUser(ctx.req)
+export const getServerSideProps: GetServerSideProps = withAuth(async (ctx) => {
+  try {
+    const user = await getUserFromRequest(ctx.req)
 
-  const user = await prisma.user.findOne({ where: { email: data.email } })
+    if (user.name) {
+      ctx.res.writeHead(302, { Location: '/' })
+      ctx.res.end()
+
+      return {
+        props: {},
+      }
+    }
+
+    return {
+      props: {
+        user,
+      },
+    }
+  } catch (error) {
+    ctx.res.writeHead(302, { Location: '/login' })
+    ctx.res.end()
+  }
+
   return {
-    props: {
-      user,
-    },
+    props: {},
   }
-}
+})
 
-export default Create
+export default CreatePage

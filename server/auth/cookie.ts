@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import { serialize, parse } from 'cookie'
 import { NowResponse, NowRequest } from '@vercel/node'
 import { IncomingMessage } from 'http'
+import { MagicUserMetadata } from '@magic-sdk/admin'
 
 export const encrypt = (data: string | object | Buffer, expiresIn = '1d') =>
   new Promise<string>((resolve, reject) =>
@@ -49,7 +50,7 @@ export function getTokenCookie(req: IncomingMessage | NowRequest) {
   return cookies[TOKEN_NAME]
 }
 
-export async function getCurrentUser(req: IncomingMessage | NowRequest): Promise<JWTUser | null> {
+export async function getCurrentUser(req: IncomingMessage | NowRequest): Promise<MagicUserMetadata | null> {
   const token = getTokenCookie(req)
   const data = await decrypt(token)
 

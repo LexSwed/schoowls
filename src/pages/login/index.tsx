@@ -1,9 +1,20 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import Router from 'next/router'
-import { Box, Card, Heading, TextField, Button, Stack } from '@fxtrot/edge'
-
-import { Magic } from 'magic-sdk'
+import {
+  Box,
+  Button,
+  Stack,
+  Heading,
+  FormControl,
+  FormLabel,
+  Input,
+  FormHelperText,
+  InputGroup,
+  InputLeftElement,
+  Icon,
+} from '@chakra-ui/core'
+import { magicLogin } from '../../lib/magicLogin'
+import styled from '@emotion/styled'
 
 const Container = styled(Box)`
   display: grid;
@@ -17,44 +28,24 @@ const LoginButton = styled(Button)`
 `
 
 const Login = () => {
-  const [errorMessage, setMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
   const [loading, setLoading] = useState(false)
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setLoading(true)
-    errorMessage && setMessage('')
-
-    const body = {
-      email: e.currentTarget.email.value,
-    }
+    errorMessage && setErrorMessage('')
 
     try {
-      const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUBLIC_KEY)
-      const didToken = await magic.auth.loginWithMagicLink({
-        email: body.email,
-      })
-      const res = await fetch('/api/authorize', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + didToken,
-        },
-        body: JSON.stringify(body),
-      })
-      if (res.status === 200) {
-        const { user } = await res.json()
+      const user = await magicLogin(e.currentTarget.email.value)
 
-        if (user?.name) {
-          Router.push('/')
-        } else {
-          Router.push('/create')
-        }
+      if (user?.name) {
+        Router.push('/')
       } else {
-        throw new Error(await res.text())
+        Router.push('/create')
       }
     } catch (error) {
-      console.error('An unexpected error happened occurred:', error)
+      setErrorMessage(error.message)
     } finally {
       setLoading(false)
     }
@@ -62,23 +53,33 @@ const Login = () => {
 
   return (
     <Container>
-      <Card elevation="0" p="l">
-        <Stack space="l">
-          <Heading as="h2">Sign in to your account</Heading>
-          <Stack space="m" as="form" onSubmit={handleSubmit}>
-            <TextField
-              type="email"
-              name="email"
-              label="Email"
-              tone={errorMessage ? 'critical' : undefined}
-              message={errorMessage}
-            />
-            <LoginButton type="submit" loading={loading} variant="brand" size="l">
+      <Box p="l" maxW={600}>
+        <Stack spacing={4}>
+          <Heading as="h2">Sign in with Email</Heading>
+          <Stack spacing={2} as="form" onSubmit={handleSubmit}>
+            <FormControl isInvalid={Boolean(errorMessage)}>
+              <InputGroup>
+                <InputLeftElement children={<Icon name="email" color="gray.300" />} />
+                <Input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="john.doe@email.com"
+                  aria-describedby={errorMessage && 'email-helper-text'}
+                />
+              </InputGroup>
+              {errorMessage && (
+                <FormHelperText color="red.600" id="email-helper-text">
+                  {errorMessage}
+                </FormHelperText>
+              )}
+            </FormControl>
+            <LoginButton type="submit" variantColor="cyan" isLoading={loading}>
               Continue
             </LoginButton>
           </Stack>
         </Stack>
-      </Card>
+      </Box>
     </Container>
   )
 }
