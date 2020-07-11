@@ -1,13 +1,14 @@
 import type { MagicUserMetadata } from '@magic-sdk/admin'
-import type { User, UserDetails } from '@prisma/client'
+import type { User } from '@prisma/client'
 import { IncomingMessage } from 'http'
 
 import { magic } from './magic'
 import { prisma } from '../db'
 import { encryptToken } from './cookie'
 import { getUserDetails } from '../db'
+import { NowRequest, NowResponse } from '@vercel/node'
 
-export const authorize = async (didToken: string, userDetails: Partial<UserDetails>) => {
+export const authorize = async (didToken: string, userDetails: UserDetailsFromFE) => {
   const metadata = await magic.users.getMetadataByToken(didToken)
 
   let existingUser = await prisma.user.findOne({
@@ -25,12 +26,12 @@ export const authorize = async (didToken: string, userDetails: Partial<UserDetai
     await login(existingUser)
   }
 
-  const user: UserAuth = await getUserDetails({ issuer: metadata.issuer })
+  const user = await getUserDetails({ issuer: metadata.issuer })
 
   return { session: metadata, user }
 }
 
-const signup = async (metadata: MagicUserMetadata, { timeZone }: Partial<UserDetails>) => {
+const signup = async (metadata: MagicUserMetadata, { timeZone }: UserDetailsFromFE) => {
   const signUpDate = new Date().toISOString()
 
   return await prisma.user.create({
@@ -39,11 +40,7 @@ const signup = async (metadata: MagicUserMetadata, { timeZone }: Partial<UserDet
       email: metadata.email,
       registeredAt: signUpDate,
       lastLoginAt: signUpDate,
-      details: {
-        create: {
-          timeZone,
-        },
-      },
+      timeZone,
     },
   })
 }
@@ -55,18 +52,42 @@ const login = async (existingUser: { id: User['id'] }) => {
   })
 }
 
-export async function isLoggedIn(req: IncomingMessage) {
+export function isLoggedIn(req: IncomingMessage) {
   try {
-    return Boolean(await encryptToken(req))
+    return Boolean(encryptToken(req))
   } finally {
     return false
   }
 }
 
-export async function getUserFromRequest(req: IncomingMessage): Promise<UserAuth> {
-  const data = await encryptToken(req)
+export async function getUserFromRequest(req: IncomingMessage | NowRequest): Promise<ContextUser> {
+  const data = encryptToken(req)
 
   const user = await getUserDetails({ email: data.email })
 
-  return JSON.parse(JSON.stringify(user)) // next.js requires Date to be String
+  return user
 }
+
+export const withUser = (handler: (req: NowRequest, res: NowResponse) => Promise<any>) => async (
+  req: NowRequest,
+  res: NowResponse
+) => {
+  try {
+    const data = encryptToken(req)
+
+    const user = await getUserDetails({ email: data.email })
+
+    Object.defineProperty(req, 'user', {
+      get() {
+        return user
+      },
+    })
+
+    return handler(req, res)
+  } catch (error) {
+    res.writeHead(301, { Location: '/login' })
+    res.end()
+  }
+}
+
+type UserDetailsFromFE = { timeZone: string }

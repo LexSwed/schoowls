@@ -2,17 +2,13 @@ import jwt from 'jsonwebtoken'
 import { serialize, parse } from 'cookie'
 import { NowResponse, NowRequest } from '@vercel/node'
 import { IncomingMessage } from 'http'
-import { MagicUserMetadata } from '@magic-sdk/admin'
 
-export const encrypt = (data: string | object | Buffer, expiresIn = '1d') =>
+export const encrypt = (data: Partial<Session>, expiresIn = '1d'): Promise<string> =>
   new Promise<string>((resolve, reject) =>
     jwt.sign(data, process.env.JWT_SECRET, { expiresIn }, (err, token) => (err ? reject(err) : resolve(token)))
   )
 
-export const decrypt = (token: string) =>
-  new Promise<any>((resolve, reject) =>
-    jwt.verify(token, process.env.JWT_SECRET, {}, (err, data) => (err ? reject(err) : resolve(data)))
-  )
+export const decrypt = (token: string) => jwt.verify(token, process.env.JWT_SECRET, {}) as Session
 
 const TOKEN_NAME = 'schoowls_token'
 const MAX_AGE = 60 * 60 * 24 * 3 // 3 days
@@ -50,9 +46,9 @@ export function getTokenCookie(req: IncomingMessage | NowRequest) {
   return cookies[TOKEN_NAME]
 }
 
-export async function encryptToken(req: IncomingMessage | NowRequest): Promise<MagicUserMetadata | null> {
+export function encryptToken(req: IncomingMessage | NowRequest) {
   const token = getTokenCookie(req)
-  const data = await decrypt(token)
+  const data = decrypt(token)
 
   return data
 }

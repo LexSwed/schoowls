@@ -9,23 +9,16 @@ generator client {
 
 // internal info
 model User {
-    id             Int         @default(autoincrement()) @id
-    details        UserDetails
-    issuer         String      @unique
-    email          String      @unique
-    disabled       Boolean?    @default(false)
-    registeredAt   DateTime    @default(now()) // ISO Date
+    id             Int       @default(autoincrement()) @id
+    issuer         String    @unique
+    email          String    @unique
+    name           String?
+    alias          String?
+    phoneNumber    String?
+    avatarUrl      String?
+    timeZone       String?
+    disabled       Boolean?  @default(false)
+    registeredAt   DateTime  @default(now()) // ISO Date
     lastLoginAt    DateTime? // ISO Date
     lastActivityAt DateTime? // ISO Date
-}
-
-model UserDetails {
-    id          Int     @default(autoincrement()) @id
-    user        User    @relation(fields: [userId], references: [id])
-    userId      Int
-    name        String?
-    alias       String?
-    phoneNumber String?
-    avatarUrl   String?
-    timeZone    String?
 }

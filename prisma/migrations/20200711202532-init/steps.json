@@ -25,81 +25,6 @@
     },
     {
       "tag": "CreateModel",
-      "model": "Account"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Account",
-      "field": "id",
-      "type": "Int",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Account",
-          "field": "id"
-        },
-        "directive": "default"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Account",
-          "field": "id"
-        },
-        "directive": "default"
-      },
-      "argument": "",
-      "value": "autoincrement()"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Account",
-          "field": "id"
-        },
-        "directive": "id"
-      }
-    },
-    {
-      "tag": "CreateField",
-      "model": "Account",
-      "field": "user",
-      "type": "User",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Account",
-      "field": "active",
-      "type": "Boolean",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Account",
-      "field": "registeredAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Account",
-      "field": "lastLoggedInAt",
-      "type": "DateTime",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateModel",
       "model": "User"
     },
     {
@@ -148,8 +73,8 @@
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "account",
-      "type": "Account",
+      "field": "issuer",
+      "type": "String",
       "arity": "Required"
     },
     {
@@ -158,9 +83,80 @@
         "path": {
           "tag": "Field",
           "model": "User",
-          "field": "account"
+          "field": "issuer"
         },
-        "directive": "relation"
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "email",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "email"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "name",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "alias",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "phoneNumber",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "avatarUrl",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "timeZone",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "disabled",
+      "type": "Boolean",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "disabled"
+        },
+        "directive": "default"
       }
     },
     {
@@ -170,12 +166,30 @@
         "path": {
           "tag": "Field",
           "model": "User",
-          "field": "account"
+          "field": "disabled"
         },
-        "directive": "relation"
+        "directive": "default"
       },
-      "argument": "fields",
-      "value": "[accountId]"
+      "argument": "",
+      "value": "false"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "registeredAt",
+      "type": "DateTime",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "registeredAt"
+        },
+        "directive": "default"
+      }
     },
     {
       "tag": "CreateArgument",
@@ -184,19 +198,26 @@
         "path": {
           "tag": "Field",
           "model": "User",
-          "field": "account"
+          "field": "registeredAt"
         },
-        "directive": "relation"
+        "directive": "default"
       },
-      "argument": "references",
-      "value": "[id]"
+      "argument": "",
+      "value": "now()"
     },
     {
       "tag": "CreateField",
       "model": "User",
-      "field": "accountId",
-      "type": "Int",
-      "arity": "Required"
+      "field": "lastLoginAt",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "lastActivityAt",
+      "type": "DateTime",
+      "arity": "Optional"
     }
   ]
 }

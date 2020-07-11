@@ -1,15 +1,24 @@
 declare const User: import('@prisma/client').User
-declare const UserDetails: import('@prisma/client').UserDetails
 
-interface UserAuth {
+interface ContextUser {
   id: User['id']
   email: User['email']
+  name: User['name']
+  alias: User['alias']
+  avatarUrl: User['avatarUrl']
+  phoneNumber: User['phoneNumber']
+  timeZone: User['timeZone']
+}
 
-  details: {
-    name: UserDetails['name']
-    alias: UserDetails['alias']
-    avatarUrl: UserDetails['avatarUrl']
-    phoneNumber: UserDetails['phoneNumber']
-    timeZone: UserDetails['timeZone']
-  }
+interface Session {
+  issuer: string
+  publicAddress: string
+  id: User['id']
+  email: User['email']
+  iat: number
+  exp: number
+}
+
+interface GraphqlContext {
+  user?: ContextUser
 }

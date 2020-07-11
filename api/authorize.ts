@@ -12,7 +12,7 @@ export default async function login(req: NowRequest, res: NowResponse) {
     }
 
     const { session, user } = await authorize(didToken, { timeZone })
-    const token = await encrypt(session)
+    const token = await encrypt({ ...session, id: user.id })
     setTokenCookie(res, token)
 
     res.status(200).send({ user })

@@ -10,14 +10,15 @@ generator client {
 // internal info
 model User {
     id             Int       @default(autoincrement()) @id
+    issuer         String    @unique
+    email          String    @unique
     name           String?
     alias          String?
     phoneNumber    String?
     avatarUrl      String?
-    issuer         String    @unique
-    email          String    @unique
+    timeZone       String?
     disabled       Boolean?  @default(false)
-    registeredAt   DateTime  @default(now())
-    lastLoginAt    DateTime?
-    lastActivityAt DateTime?
+    registeredAt   DateTime  @default(now()) // ISO Date
+    lastLoginAt    DateTime? // ISO Date
+    lastActivityAt DateTime? // ISO Date
 }
