@@ -1,9 +1,10 @@
 import { AppPropsType } from 'next/dist/next-server/lib/utils'
+
 import { ThemeProvider, CSSReset } from '@chakra-ui/core'
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '../lib/apollo'
 
-export default function App({ Component, pageProps }: AppPropsType) {
+function AppWrapper({ Component, pageProps }: AppPropsType) {
   const apolloClient = useApollo(pageProps.initialApolloState)
 
   return (
@@ -15,3 +16,27 @@ export default function App({ Component, pageProps }: AppPropsType) {
     </ThemeProvider>
   )
 }
+
+// AppWrapper.getInitialProps = async (appContext: Parameters<typeof App.getInitialProps>[0]) => {
+//   const appProps = await App.getInitialProps(appContext)
+
+//   try {
+//     const session = encryptToken(appContext.ctx.req)
+
+//     return { ...appProps, session }
+//   } catch (error) {
+//     const {
+//       ctx: { res },
+//       router,
+//     } = appContext
+//     if (error instanceof TokenExpiredError && !router.pathname.includes('/login')) {
+//       res.writeHead(302, { Location: '/login' })
+
+//       return res.end()
+//     }
+//   }
+
+//   return appProps
+// }
+
+export default AppWrapper

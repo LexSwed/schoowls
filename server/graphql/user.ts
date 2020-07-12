@@ -1,5 +1,4 @@
-import { extendType, stringArg, objectType } from '@nexus/schema'
-import { prisma } from '../db'
+import { extendType, objectType } from '@nexus/schema'
 import { User } from '@prisma/client'
 
 const userAvatar = objectType({
@@ -26,7 +25,6 @@ const me = objectType({
     t.model.id()
     t.model.email()
     t.model.name()
-    t.model.alias()
     t.model.phoneNumber()
     t.model.timeZone()
     t.field('phone', {

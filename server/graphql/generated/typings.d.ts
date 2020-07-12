@@ -3,14 +3,21 @@
  * Do not make changes to this file directly
  */
 
-
-
-
+import * as Context from "./server/graphql/context"
+import { core, connectionPluginCore } from "@nexus/schema"
 
 declare global {
+  interface NexusGenCustomOutputMethods<TypeName extends string> {
+    connectionField<FieldName extends string>(
+            fieldName: FieldName, 
+            config: connectionPluginCore.ConnectionFieldConfig<TypeName, FieldName> 
+          ): void
+  }
+}
+declare global {
   interface NexusGenCustomOutputProperties<TypeName extends string> {
+    crud: NexusPrisma<TypeName, 'crud'>
     model: NexusPrisma<TypeName, 'model'>
-    crud: any
   }
 }
 
@@ -27,7 +34,6 @@ export interface NexusGenEnums {
 export interface NexusGenRootTypes {
   Query: {};
   User: { // root type
-    alias?: string | null; // String
     email: string; // String!
     id: number; // Int!
     lastLoginAt?: any | null; // DateTime
@@ -58,7 +64,6 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User']; // User!
   }
   User: { // field return type
-    alias: string | null; // String
     avatar: NexusGenRootTypes['UserAvatar']; // UserAvatar!
     email: string; // String!
     id: number; // Int!
@@ -98,7 +103,7 @@ export type NexusGenScalarNames = "Boolean" | "DateTime" | "Float" | "ID" | "Int
 export type NexusGenUnionNames = never;
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context.Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   argTypes: NexusGenArgTypes;
@@ -123,6 +128,7 @@ declare global {
   interface NexusGenPluginTypeConfig<TypeName extends string> {
   }
   interface NexusGenPluginFieldConfig<TypeName extends string, FieldName extends string> {
+    
   }
   interface NexusGenPluginSchemaConfig {
   }

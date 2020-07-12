@@ -1,56 +1,10 @@
-import type { MagicUserMetadata } from '@magic-sdk/admin'
-import type { User } from '@prisma/client'
-import { IncomingMessage } from 'http'
+import type { IncomingMessage } from 'http'
+import type { NowRequest, NowResponse } from '@vercel/node'
 
-import { magic } from './magic'
-import { prisma } from '../db'
 import { encryptToken } from './cookie'
 import { getUserDetails } from '../db'
-import { NowRequest, NowResponse } from '@vercel/node'
 
-export const authorize = async (didToken: string, userDetails: UserDetailsFromFE) => {
-  const metadata = await magic.users.getMetadataByToken(didToken)
-
-  let existingUser = await prisma.user.findOne({
-    where: {
-      issuer: metadata.issuer,
-    },
-    select: {
-      id: true,
-    },
-  })
-
-  if (!existingUser) {
-    await signup(metadata, userDetails)
-  } else {
-    await login(existingUser)
-  }
-
-  const user = await getUserDetails({ issuer: metadata.issuer })
-
-  return { session: metadata, user }
-}
-
-const signup = async (metadata: MagicUserMetadata, { timeZone }: UserDetailsFromFE) => {
-  const signUpDate = new Date().toISOString()
-
-  return await prisma.user.create({
-    data: {
-      issuer: metadata.issuer,
-      email: metadata.email,
-      registeredAt: signUpDate,
-      lastLoginAt: signUpDate,
-      timeZone,
-    },
-  })
-}
-
-const login = async (existingUser: { id: User['id'] }) => {
-  return await prisma.user.update({
-    where: { id: existingUser.id },
-    data: { lastLoginAt: new Date().toISOString() },
-  })
-}
+export { authorize } from './authorize'
 
 export function isLoggedIn(req: IncomingMessage) {
   try {
@@ -60,7 +14,16 @@ export function isLoggedIn(req: IncomingMessage) {
   }
 }
 
-export async function getUserFromRequest(req: IncomingMessage | NowRequest): Promise<ContextUser> {
+export function getSession(req: IncomingMessage) {
+  try {
+    return encryptToken(req)
+  } catch (error) {
+    console.error(error)
+    return null
+  }
+}
+
+export async function getUserFromRequest(req: IncomingMessage | NowRequest) {
   const data = encryptToken(req)
 
   const user = await getUserDetails({ email: data.email })
@@ -68,18 +31,14 @@ export async function getUserFromRequest(req: IncomingMessage | NowRequest): Pro
   return user
 }
 
-export const withUser = (handler: (req: NowRequest, res: NowResponse) => Promise<any>) => async (
+export const withSession = (handler: (req: NowRequest, res: NowResponse) => Promise<any>) => async (
   req: NowRequest,
   res: NowResponse
 ) => {
   try {
-    const data = encryptToken(req)
-
-    const user = await getUserDetails({ email: data.email })
-
-    Object.defineProperty(req, 'user', {
+    Object.defineProperty(req, 'session', {
       get() {
-        return user
+        return encryptToken(req)
       },
     })
 

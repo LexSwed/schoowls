@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:dev.db"
+    url = "***"
 }
 
 generator client {
@@ -41,7 +41,7 @@ model TechingClass {
 
 model Class {
     id             Int            @id @default(autoincrement())
-    name           String         @unique
+    title          String         @unique
     techingClasses TechingClass[]
     plan           StudyPlan
 }

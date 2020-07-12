@@ -1,4 +1,4 @@
-import { makeSchema } from '@nexus/schema'
+import { makeSchema, connectionPlugin } from '@nexus/schema'
 import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 import { DateTime } from 'graphql-iso-date'
 
@@ -13,9 +13,24 @@ export const schema = makeSchema({
   },
   plugins: [
     nexusSchemaPrisma({
+      experimentalCRUD: true,
       scalars: {
         DateTime: DateTime,
       },
     }),
+    connectionPlugin(),
   ],
+  typegenAutoConfig: {
+    contextType: 'Context.Context',
+    sources: [
+      {
+        source: '@prisma/client',
+        alias: 'prisma',
+      },
+      {
+        source: require.resolve('./context'),
+        alias: 'Context',
+      },
+    ],
+  },
 })

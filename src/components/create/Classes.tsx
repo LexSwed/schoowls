@@ -12,12 +12,12 @@ const Classes: React.FC = () => {
   return (
     <FullsizeContainer>
       <Box width={600}>
-        <Stack>
+        <Stack spacing={16}>
           <Heading>Welcome! Let's fill in some info</Heading>
           <Stack isInline spacing={8} align="center">
-            <Stack>
+            <Stack spacing="m">
               <FormControl>
-                <FormLabel htmlFor="full-name">Email</FormLabel>
+                <FormLabel htmlFor="full-name">Name</FormLabel>
                 <Input
                   id="full-name"
                   name="name"

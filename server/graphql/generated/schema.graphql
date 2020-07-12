@@ -9,7 +9,6 @@ type Query {
 }
 
 type User {
-  alias: String
   avatar: UserAvatar!
   email: String!
   id: Int!

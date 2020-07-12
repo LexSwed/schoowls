@@ -3,12 +3,12 @@ import { serialize, parse } from 'cookie'
 import { NowResponse, NowRequest } from '@vercel/node'
 import { IncomingMessage } from 'http'
 
-export const encrypt = (data: Partial<Session>, expiresIn = '1d'): Promise<string> =>
+export const encrypt = (data: Partial<AuthSession>, expiresIn = '5d'): Promise<string> =>
   new Promise<string>((resolve, reject) =>
     jwt.sign(data, process.env.JWT_SECRET, { expiresIn }, (err, token) => (err ? reject(err) : resolve(token)))
   )
 
-export const decrypt = (token: string) => jwt.verify(token, process.env.JWT_SECRET, {}) as Session
+export const decrypt = (token: string) => jwt.verify(token, process.env.JWT_SECRET, {}) as AuthSession
 
 const TOKEN_NAME = 'schoowls_token'
 const MAX_AGE = 60 * 60 * 24 * 3 // 3 days

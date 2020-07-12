@@ -1,12 +1,16 @@
 import { ApolloServer } from 'apollo-server-micro'
-import { withUser } from '../server/auth'
+import { withSession } from '../server/auth'
 import { schema } from '../server/graphql'
+import { context } from '../server/graphql/context'
+
+const isProd = process.env.NODE_ENV === 'production'
 
 const apolloServer = new ApolloServer({
-  context: ({ req }) => ({ user: req.user }),
+  context,
   schema,
-  introspection: !(process.env.NODE_ENV === 'production'),
-  playground: !(process.env.NODE_ENV === 'production'),
+  tracing: !isProd,
+  introspection: !isProd,
+  playground: !isProd,
 })
 
 export const config = {
@@ -17,4 +21,4 @@ export const config = {
 
 const handler = apolloServer.createHandler({ path: '/api/gql' })
 
-export default withUser(handler)
+export default withSession(handler)

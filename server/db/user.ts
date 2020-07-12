@@ -7,9 +7,7 @@ export function getUserDetails(where: UserWhereUniqueInput) {
     select: {
       id: true,
       email: true,
-      issuer: true,
       name: true,
-      alias: true,
       avatarUrl: true,
       phoneNumber: true,
       timeZone: true,
