@@ -7,7 +7,7 @@ const dbClasses = ['Math', 'Science', 'Literature', 'Language']
 
 const Classes: React.FC = () => {
   const [name, setName] = useState('')
-  const [classes, setClasses] = useState([])
+  const [class, setClass] = useState('')
 
   return (
     <FullsizeContainer>
@@ -26,11 +26,17 @@ const Classes: React.FC = () => {
                   onChange={(e) => setName(e.target.value)}
                 />
               </FormControl>
-              {/* <Select onSelect={(c) => setClasses([...classes, c])}>
-                  {dbClasses.map((cl) => (
-                    <Option value={cl}>{cl}</Option>
-                  ))}
-                </Select> */}
+              <FormControl>
+                <FormLabel htmlFor="classes">Classes</FormLabel>
+                <Input
+                  id="classes"
+                  name="classs"
+                  value={class}
+                  placeholder="Add new class"
+                  onChange={(e) => setClass(e.target.value)}
+                />
+              </FormControl>
+              
             </Stack>
             <Box size="sm">
               <Image src="/images/teaching.svg" alt="Teacher with a board behind" />
