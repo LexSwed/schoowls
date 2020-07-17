@@ -2,12 +2,9 @@ import React, { useState } from 'react'
 import { Box, Stack, Heading, FormControl, FormLabel, Input, Image } from '@chakra-ui/core'
 import { FullsizeContainer } from '../FullsizeContainer'
 
-// TODO: move to DB
-const dbClasses = ['Math', 'Science', 'Literature', 'Language']
-
 const Classes: React.FC = () => {
   const [name, setName] = useState('')
-  const [class, setClass] = useState('')
+  const [teachingClass, setClass] = useState('')
 
   return (
     <FullsizeContainer>
@@ -31,12 +28,11 @@ const Classes: React.FC = () => {
                 <Input
                   id="classes"
                   name="classs"
-                  value={class}
+                  value={teachingClass}
                   placeholder="Add new class"
                   onChange={(e) => setClass(e.target.value)}
                 />
               </FormControl>
-              
             </Stack>
             <Box size="sm">
               <Image src="/images/teaching.svg" alt="Teacher with a board behind" />

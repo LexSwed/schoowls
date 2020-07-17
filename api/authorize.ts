@@ -3,6 +3,8 @@ import { NowRequest, NowResponse } from '@vercel/node'
 import { authorize } from '../server/auth'
 
 export default async function login(req: NowRequest, res: NowResponse) {
+  if (req.method !== 'POST') return res.status(405).end()
+
   try {
     const didToken = req.headers.authorization.substr(7)
     const { timeZone } = req.body

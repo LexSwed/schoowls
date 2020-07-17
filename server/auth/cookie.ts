@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { serialize, parse } from 'cookie'
+import { serialize, parse, CookieSerializeOptions } from 'cookie'
 import { NowResponse, NowRequest } from '@vercel/node'
 import { IncomingMessage } from 'http'
 
@@ -13,25 +13,31 @@ export const decrypt = (token: string) => jwt.verify(token, process.env.JWT_SECR
 const TOKEN_NAME = 'schoowls_token'
 const MAX_AGE = 60 * 60 * 24 * 3 // 3 days
 
-export function setTokenCookie(res: NowResponse, token: string) {
-  const cookie = serialize(TOKEN_NAME, token, {
+function createCookie(name: string, data: string, options: CookieSerializeOptions = {}) {
+  return serialize(name, data, {
     maxAge: MAX_AGE,
     expires: new Date(Date.now() + MAX_AGE * 1000),
-    httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     path: '/',
+    httpOnly: true,
     sameSite: 'lax',
+    ...options,
   })
-  res.setHeader('Set-Cookie', cookie)
+}
+
+export function setTokenCookie(res: NowResponse, token: string) {
+  res.setHeader('Set-Cookie', [createCookie(TOKEN_NAME, token), createCookie('authed', 'true', { httpOnly: false })])
 }
 
 export function removeTokenCookie(res: NowResponse) {
-  const cookie = serialize(TOKEN_NAME, '', {
-    maxAge: -1,
-    path: '/',
-  })
-
-  res.setHeader('Set-Cookie', cookie)
+  res.setHeader('Set-Cookie', [
+    createCookie(TOKEN_NAME, '', {
+      maxAge: -1,
+    }),
+    createCookie('authed', '', {
+      maxAge: -1,
+    }),
+  ])
 }
 
 export function parseCookies(req: IncomingMessage | NowRequest) {

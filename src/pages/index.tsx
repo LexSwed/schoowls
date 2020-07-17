@@ -1,8 +1,22 @@
 import React from 'react'
-import { GetServerSideProps } from 'next'
+import Head from 'next/head'
 
 function HomePage() {
-  return <div>Welcome to Next.js!</div>
+  return (
+    <div>
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+if (document.cookie && !document.cookie.includes('authed')) {
+  window.location.href = "/login"
+}`,
+          }}
+        />
+      </Head>
+      Welcome to Next.js!
+    </div>
+  )
 }
 
 export default HomePage
