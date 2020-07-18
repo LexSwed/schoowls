@@ -1,19 +1,11 @@
 import React, { useState } from 'react'
+import { Box } from '@chakra-ui/core'
 import Router from 'next/router'
-import {
-  Box,
-  Button,
-  Stack,
-  Heading,
-  FormControl,
-  Input,
-  FormHelperText,
-  InputGroup,
-  InputLeftElement,
-  Icon,
-} from '@chakra-ui/core'
-import { magicLogin } from '../../lib/magicLogin'
 import styled from '@emotion/styled'
+
+import { AuthResponse } from '../../../api/authorize'
+import { LoginForm, Start } from '../../components/login'
+import { useIsAuth } from '../../lib'
 
 const Container = styled(Box)`
   display: grid;
@@ -22,62 +14,31 @@ const Container = styled(Box)`
   width: 100vw;
 `
 
-const LoginButton = styled(Button)`
-  width: 100%;
-`
+enum Screen {
+  login = 'login',
+  start = 'start',
+}
 
 const Login = () => {
-  const [errorMessage, setErrorMessage] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [screen, setScreen] = useState(Screen.login)
+  const isAuth = useIsAuth()
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    setLoading(true)
-    errorMessage && setErrorMessage('')
+  if (isAuth) {
+    Router.push('/')
+  }
 
-    try {
-      const user = await magicLogin(e.currentTarget.email.value)
-
-      if (user?.name) {
-        Router.push('/')
-      } else {
-        Router.push('/create')
-      }
-    } catch (error) {
-      setErrorMessage(error.message)
-    } finally {
-      setLoading(false)
+  async function handleSuccess({ user, isNewUser }: AuthResponse) {
+    if (isNewUser) {
+      setScreen(Screen.start)
+    } else {
+      Router.push('/')
     }
   }
 
   return (
     <Container>
       <Box p="l" maxW={600}>
-        <Stack spacing={4}>
-          <Heading as="h2">Sign in with Email</Heading>
-          <Stack spacing={2} as="form" onSubmit={handleSubmit}>
-            <FormControl isInvalid={Boolean(errorMessage)}>
-              <InputGroup>
-                <InputLeftElement children={<Icon name="email" color="gray.300" />} />
-                <Input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="john.doe@email.com"
-                  aria-describedby={errorMessage && 'email-helper-text'}
-                />
-              </InputGroup>
-              {errorMessage && (
-                <FormHelperText color="red.600" id="email-helper-text">
-                  {errorMessage}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <LoginButton type="submit" variantColor="cyan" isLoading={loading}>
-              Continue
-            </LoginButton>
-          </Stack>
-        </Stack>
+        {screen === Screen.login ? <LoginForm onSuccess={handleSuccess} /> : screen === Screen.start ? <Start /> : null}
       </Box>
     </Container>
   )

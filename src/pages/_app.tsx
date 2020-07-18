@@ -1,4 +1,5 @@
 import { AppPropsType } from 'next/dist/next-server/lib/utils'
+import Head from 'next/head'
 
 import { ThemeProvider, CSSReset } from '@chakra-ui/core'
 import { ApolloProvider } from '@apollo/client'
@@ -8,12 +9,24 @@ function AppWrapper({ Component, pageProps }: AppPropsType) {
   const apolloClient = useApollo(pageProps.initialApolloState)
 
   return (
-    <ThemeProvider>
-      <CSSReset />
-      <ApolloProvider client={apolloClient}>
-        <Component {...pageProps} />
-      </ApolloProvider>
-    </ThemeProvider>
+    <>
+      <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+if (!document.cookie.includes('authed') && !window.location.href.includes('/login')) {
+  window.location.href = "/login"
+}`,
+          }}
+        />
+      </Head>
+      <ThemeProvider>
+        <CSSReset />
+        <ApolloProvider client={apolloClient}>
+          <Component {...pageProps} />
+        </ApolloProvider>
+      </ThemeProvider>
+    </>
   )
 }
 

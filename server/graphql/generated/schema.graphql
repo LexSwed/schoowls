@@ -13,7 +13,7 @@ type User {
   email: String!
   id: Int!
   lastLoginAt: DateTime
-  name: String
+  name: String!
   phone: UserPhone!
   phoneNumber: String
   registeredAt: DateTime!

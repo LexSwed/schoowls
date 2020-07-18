@@ -37,7 +37,7 @@ export interface NexusGenRootTypes {
     email: string; // String!
     id: number; // Int!
     lastLoginAt?: any | null; // DateTime
-    name?: string | null; // String
+    name: string; // String!
     phoneNumber?: string | null; // String
     registeredAt: any; // DateTime!
     timeZone?: string | null; // String
@@ -68,7 +68,7 @@ export interface NexusGenFieldTypes {
     email: string; // String!
     id: number; // Int!
     lastLoginAt: any | null; // DateTime
-    name: string | null; // String
+    name: string; // String!
     phone: NexusGenRootTypes['UserPhone']; // UserPhone!
     phoneNumber: string | null; // String
     registeredAt: any; // DateTime!

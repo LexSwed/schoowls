@@ -25,14 +25,15 @@ export const authorize = async (didToken: string, userDetails: UserDetailsFromFE
 
   const user = await getUserDetails({ email: metadata.email })
 
-  return { session: metadata, user }
+  return { session: metadata, user, isNewUser: !existingUser }
 }
 
-const signup = async (metadata: MagicUserMetadata, { timeZone }: UserDetailsFromFE) => {
+const signup = async (metadata: MagicUserMetadata, { timeZone, name }: UserDetailsFromFE) => {
   const signUpDate = new Date().toISOString()
 
   return await prisma.user.create({
     data: {
+      name,
       email: metadata.email,
       registeredAt: signUpDate,
       lastLoginAt: signUpDate,
@@ -48,4 +49,4 @@ const login = async (existingUser: { id: User['id'] }) => {
   })
 }
 
-type UserDetailsFromFE = { timeZone: string }
+type UserDetailsFromFE = { timeZone: string; name?: string }
