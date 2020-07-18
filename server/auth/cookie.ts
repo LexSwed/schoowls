@@ -14,7 +14,7 @@ const TOKEN_NAME = 'schoowls_token'
 const MAX_AGE = 60 * 60 * 24 * 3 // 3 days
 
 function createCookie(name: string, data: string, options: CookieSerializeOptions = {}) {
-  return serialize(name, data, {
+  return serialize(`__Host-${name}`, data, {
     maxAge: MAX_AGE,
     expires: new Date(Date.now() + MAX_AGE * 1000),
     secure: process.env.NODE_ENV === 'production',

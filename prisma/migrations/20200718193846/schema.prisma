@@ -8,18 +8,17 @@ generator client {
 }
 
 model User {
-    id                   Int       @id @default(autoincrement())
-    email                String    @unique
-    name                 String?
-    phoneNumber          String?
-    avatarUrl            String?
-    timeZone             String?
-    disabled             Boolean?  @default(false)
-    finishedRegistration Boolean   @default(false)
-    registeredAt         DateTime  @default(now()) // ISO Date
-    lastLoginAt          DateTime? // ISO Date
-    lastActivityAt       DateTime? // ISO Date
-    teacher              Teacher?
+    id             Int       @id @default(autoincrement())
+    email          String    @unique
+    name           String
+    phoneNumber    String?
+    avatarUrl      String?
+    timeZone       String?
+    disabled       Boolean?  @default(false)
+    registeredAt   DateTime  @default(now()) // ISO Date
+    lastLoginAt    DateTime? // ISO Date
+    lastActivityAt DateTime? // ISO Date
+    teacher        Teacher?
 }
 
 model Teacher {
