@@ -10,6 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   FormLabel,
+  useToast,
 } from '@chakra-ui/core'
 import styled from '@emotion/styled'
 import { GoPerson, GoMail } from 'react-icons/go'
@@ -29,6 +30,7 @@ const LoginForm: React.FC<Props> = ({ onSuccess }) => {
   const [errorMessage, setErrorMessage] = useState('')
   const [showNameField, setShowNameField] = useState(false)
   const [loading, setLoading] = useState(false)
+  const toast = useToast()
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -40,6 +42,13 @@ const LoginForm: React.FC<Props> = ({ onSuccess }) => {
       const isExists = await checkExistingUser(email.value)
 
       if (!isExists && (!fullname || fullname?.value?.length === 0)) {
+        toast({
+          title: "Seems like it's your first sign in",
+          description: 'Can you tell us how can we refer to you?',
+          status: 'info',
+          duration: 9000,
+          isClosable: true,
+        })
         setShowNameField(true)
       } else {
         const res = await magicLogin({ email: email.value, name: fullname?.value })
@@ -54,8 +63,8 @@ const LoginForm: React.FC<Props> = ({ onSuccess }) => {
   }
 
   return (
-    <Stack spacing={4}>
-      <Heading as="h2">Sign in with Email</Heading>
+    <Stack spacing={4} width={320}>
+      <Heading as="h2">Sign in</Heading>
       <Stack spacing={4} as="form" onSubmit={handleSubmit}>
         <FormControl isInvalid={Boolean(errorMessage)}>
           <InputGroup>
@@ -76,18 +85,10 @@ const LoginForm: React.FC<Props> = ({ onSuccess }) => {
         </FormControl>
         {showNameField && (
           <FormControl isInvalid={Boolean(errorMessage)}>
-            <FormLabel htmlFor="fullname">Full name</FormLabel>
             <InputGroup>
               <InputLeftElement children={<Box as={GoPerson} color="gray.500" />} />
-              <Input
-                id="fullname"
-                name="fullname"
-                isRequired
-                placeholder="Albus Dumbledore"
-                aria-describedby="name-helper-text"
-              />
+              <Input id="fullname" name="fullname" isRequired placeholder="Albus Dumbledore" />
             </InputGroup>
-            <FormHelperText id="name-helper-text">So that we know how we can call you</FormHelperText>
           </FormControl>
         )}
         <LoginButton type="submit" variantColor="cyan" isLoading={loading}>

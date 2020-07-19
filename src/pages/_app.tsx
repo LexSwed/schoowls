@@ -10,7 +10,7 @@ function AppWrapper({ Component, pageProps }: AppPropsType) {
 
   return (
     <>
-      <Head>
+      {/* <Head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -19,7 +19,7 @@ if (!document.cookie.includes('authed') && !window.location.href.includes('/logi
 }`,
           }}
         />
-      </Head>
+      </Head> */}
       <ThemeProvider>
         <CSSReset />
         <ApolloProvider client={apolloClient}>

@@ -20,7 +20,7 @@ enum Screen {
 }
 
 const Login = () => {
-  const [screen, setScreen] = useState(Screen.login)
+  const [screen, setScreen] = useState(Screen.start)
   const isAuth = useIsAuth()
 
   if (isAuth) {
@@ -37,9 +37,7 @@ const Login = () => {
 
   return (
     <Container>
-      <Box p="l" maxW={600}>
-        {screen === Screen.login ? <LoginForm onSuccess={handleSuccess} /> : screen === Screen.start ? <Start /> : null}
-      </Box>
+      {screen === Screen.login ? <LoginForm onSuccess={handleSuccess} /> : screen === Screen.start ? <Start /> : null}
     </Container>
   )
 }

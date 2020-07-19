@@ -44,6 +44,7 @@ model Class {
     name           String         @unique
     techingClasses TechingClass[]
     plan           StudyPlan
+    grade          Int
 }
 
 model TechingClassSchedule {
