@@ -35,10 +35,41 @@ const WeekPlanner: React.FC = () => {
 }
 
 const DayColumn: React.FC<{ day: string }> = ({ day }) => {
+  const touchStart = useRef<number>()
+  const touchEnd = useRef<number>()
+  const cellsRef = useRef(new WeakMap<HTMLDivElement, number>())
+
+  useEventListener('mouseup', (e) => {
+    if (!cellsRef.current.has(e.target)) {
+      touchEnd.current = null
+      touchStart.current = null
+    }
+  })
+
   return (
-    <Box position="relative">
+    <Box
+      position="relative"
+      onMouseDown={(e) => {
+        const hour = cellsRef.current.get(e.target as HTMLDivElement)
+        touchStart.current = hour
+      }}
+      onMouseUp={(e) => {
+        const hour = cellsRef.current.get(e.target as HTMLDivElement)
+        touchEnd.current = hour
+        touchStart.current = null
+      }}
+      onMouseMove={(e) => {
+        if (!touchStart.current && touchStart.current !== 0) {
+          return
+        }
+        const { clientY } = e
+        console.log(clientY - e.currentTarget.offsetTop)
+        console.log((e.target as HTMLDivElement).offsetTop)
+        console.dir(cellsRef.current.get(e.target as HTMLDivElement))
+      }}
+    >
       {hours.map((hour) => (
-        <DayBox height="48px" key={`${day}-${hour}`} />
+        <DayBox height="48px" key={`${day}-${hour}`} ref={(el) => el && cellsRef.current.set(el, hour)} />
       ))}
     </Box>
   )
@@ -75,7 +106,4 @@ const HourIndicator: React.FC<{ hour: number }> = ({ hour }) => {
 const DayBox = styled(Box)`
   border-right-width: 1px;
   border-bottom-width: 1px;
-  &:hover {
-    background-color: rgba(160, 174, 192, 0.03);
-  }
 `
