@@ -4,6 +4,7 @@ import { DateTime } from 'graphql-iso-date'
 
 import path from 'path'
 import { userQuery } from './user'
+import { prisma } from '../db'
 
 export const schema = makeSchema({
   types: [userQuery],
@@ -13,6 +14,7 @@ export const schema = makeSchema({
   },
   plugins: [
     nexusSchemaPrisma({
+      prismaClient: () => prisma,
       experimentalCRUD: true,
       scalars: {
         DateTime: DateTime,

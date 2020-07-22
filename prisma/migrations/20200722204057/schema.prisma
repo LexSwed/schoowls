@@ -1,6 +1,6 @@
 datasource db {
     provider = "sqlite"
-    url      = "file:dev.db"
+    url = "***"
 }
 
 generator client {
@@ -54,9 +54,9 @@ model TechingCourseSchedule {
     startDate DateTime?
     /// end of the course
     endDate   DateTime?
-    day       Int?
-    period    Period?       @relation(fields: [periodId], references: [id])
-    periodId  Int?
+    day       Int
+    period    Period        @relation(fields: [periodId], references: [id])
+    periodId  Int
 }
 
 model Lesson {
