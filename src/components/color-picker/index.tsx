@@ -48,7 +48,7 @@ type Props = {
   onChange: (value: string) => void
 }
 
-const colors = ['red', 'orange', 'blue', 'orange', 'green', 'yellow', 'teal', 'cyan', 'pink']
+const colors = ['red', 'blue', 'orange', 'green', 'yellow', 'teal', 'cyan', 'pink']
 
 const ColorPicker: React.FC<Props> = ({ value, onChange }) => {
   return (
