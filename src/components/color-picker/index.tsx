@@ -48,28 +48,18 @@ type Props = {
   onChange: (value: string) => void
 }
 
-const colors = [
-  'red.400',
-  'orange.400',
-  'blue.400',
-  'orange.600',
-  'green.400',
-  'yellow.500',
-  'teal.400',
-  'cyan.400',
-  'pink.500',
-]
+const colors = ['red', 'orange', 'blue', 'orange', 'green', 'yellow', 'teal', 'cyan', 'pink']
 
 const ColorPicker: React.FC<Props> = ({ value, onChange }) => {
   return (
     <Popover usePortal>
       <PopoverTrigger>
-        <ColorBunk bg={value} />
+        <ColorBunk bg={`${value}.400`} />
       </PopoverTrigger>
       <PopoverContent p={2} zIndex={100} width="auto">
         <SimpleGrid spacing={2} alignItems="center" justifyContent="center" columns={4}>
           {colors.map((color) => (
-            <ColorBunk bg={color} key={color} size={10} onClick={() => onChange(color)} />
+            <ColorBunk bg={`${color}.400`} key={color} size={10} onClick={() => onChange(color)} />
           ))}
         </SimpleGrid>
       </PopoverContent>
