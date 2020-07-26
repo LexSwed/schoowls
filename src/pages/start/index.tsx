@@ -27,8 +27,8 @@ const Start: React.FC = () => {
   const [courses, updateList] = useState([emptyCourse])
 
   return (
-    <Center bg="#F0F1F6">
-      <Stack bg="#fff" p={6} px={8} spacing={4} border="1px" borderColor="gray.200" borderRadius="md">
+    <Center bg="gray.50">
+      <Stack p={6} px={8} spacing={4}>
         <Heading size="lg">Welcome! What courses you teach?</Heading>
         <Stack spacing={4}>
           {courses.map((course, i) => (
