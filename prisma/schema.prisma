@@ -47,6 +47,11 @@ model Course {
     techingCourse TechingCourse[]
 }
 
+model Timetable {
+    id      Int      @id @default(autoincrement())
+    periods Period[]
+}
+
 model TechingCourseSchedule {
     id        Int           @id @default(autoincrement())
     class     TechingCourse
@@ -93,4 +98,6 @@ model Period {
     /// Minutes
     duration              Int
     techingCourseSchedule TechingCourseSchedule[]
+    timetable             Timetable?              @relation(fields: [timetableId], references: [id])
+    timetableId           Int?
 }
