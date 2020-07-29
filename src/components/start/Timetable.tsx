@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import type { Period } from '@prisma/client'
 import { Box, Heading, Stack, PseudoBox, FormLabel, Select, Input, FormControl, Grid } from '@chakra-ui/core'
 import { parse, addMinutes, lightFormat } from 'date-fns'
@@ -9,74 +9,94 @@ const options = ['30', '35', '40', '45', '60', '1:20', '1:25', '1:30'].map((t) =
   </option>
 ))
 
-const TimetableRow: React.FC<LocalPeriod & { onChange: (update: LocalPeriod) => void }> = ({
+const TimetableRow: React.FC<LocalPeriod & { onChange: (startTime: string) => void }> = ({
   startTime,
-  duration = 45,
+  endTime,
   onChange,
 }) => {
   return (
-    <PseudoBox display="grid" gridTemplateColumns="1fr 1fr" gridGap={2} _odd={{ bg: 'gray.100' }}>
+    <Grid gridTemplateColumns="120px 120px" gridGap={2}>
       <Input
         aria-describedby="start-time"
         name="start-time"
         value={startTime}
-        onChange={(e) => onChange({ duration, startTime: e.target.value })}
+        onChange={(e) => onChange(e.target.value)}
         type="time"
+        step={300}
       />
-      <Input
-        aria-describedby="end-time"
-        name="end-time"
-        value={toEndTime(startTime, duration)}
-        isReadOnly
-        type="time"
-      />
-    </PseudoBox>
+      <Input aria-describedby="end-time" name="end-time" value={endTime} isReadOnly type="time" step={300} />
+    </Grid>
   )
 }
 
-const initial: LocalPeriod = { startTime: '08:30', duration: 45 }
+const breakMins = 10
+const defaultDuration = 45
+const initialTime = '08:30'
+const initial: LocalPeriod[] = Array(5)
+  .fill(1)
+  .reduce((res, _n, i, arr) => {
+    if (i === 0) {
+      res.push({
+        startTime: initialTime,
+        endTime: toEndTime(initialTime, defaultDuration),
+      })
+    } else {
+      const startTime = toEndTime(res[i - 1].endTime, breakMins)
+      res.push({
+        startTime,
+        endTime: toEndTime(startTime, defaultDuration),
+      })
+    }
+
+    return res
+  }, [] as LocalPeriod[])
 
 const Timetable: React.FC = () => {
-  const [periods, setPeriods] = useState<LocalPeriod[]>([initial])
-  const [duration, setDuration] = useState(45)
+  const [duration, setDuration] = useState(defaultDuration)
+  const [periods, setPeriods] = useState<LocalPeriod[]>(initial)
+
+  const onDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const duration = toMinutes(e.target.value)
+    setDuration(duration)
+    setPeriods(updatePeriods(periods, duration))
+  }
 
   return (
-    <Box>
-      <Grid templateColumns="1fr auto" gap={2} p={2}>
-        <Stack direction="column" spacing={2}>
-          <Grid display="grid" gridTemplateColumns="1fr 1fr" gridGap={2}>
-            <FormLabel id="start-time">Start time</FormLabel>
-            <FormLabel id="end-time">End time</FormLabel>
-          </Grid>
+    <Grid templateColumns="1fr auto" gap={2} p={2}>
+      <Stack direction="column" spacing={2}>
+        <Grid display="grid" gridTemplateColumns="120px 120px" gridGap={2}>
+          <FormLabel id="start-time">Start time</FormLabel>
+          <FormLabel id="end-time">End time</FormLabel>
+        </Grid>
+        <Grid gridGap={4}>
           {periods.map((p, i) => (
             <TimetableRow
               key={i}
               {...p}
-              onChange={(update) =>
+              onChange={(startTime) =>
                 setPeriods((periods) => {
-                  periods[i] = update
-
-                  return [...periods]
+                  return [
+                    ...periods.slice(0, i),
+                    ...updatePeriods([{ startTime, endTime: p.endTime }, ...periods.slice(i + 1)], duration),
+                  ]
                 })
               }
             />
           ))}
-        </Stack>
+        </Grid>
+      </Stack>
 
-        <Stack spacing={2}>
-          <FormLabel htmlFor="duration">Duration</FormLabel>
-          <Select id="duration" value={toDuration(duration)} onChange={(e) => setDuration(toMinutes(e.target.value))}>
-            {options}
-          </Select>
-        </Stack>
-      </Grid>
-    </Box>
+      <Stack spacing={2}>
+        <FormLabel htmlFor="duration">Duration</FormLabel>
+        <Select id="duration" value={toDuration(duration)} onChange={onDurationChange}>
+          {options}
+        </Select>
+      </Stack>
+    </Grid>
   )
 }
 
 export default Timetable
-
-type LocalPeriod = Omit<Period, 'id'>
 
 function toDuration(minutes: number): string {
   if (minutes > 60) {
@@ -105,4 +125,25 @@ function toEndTime(startTime: string, duration: number): string {
   const endDate = addMinutes(dateTime, duration)
 
   return lightFormat(endDate, 'HH:mm')
+}
+
+// weird stuff
+function updatePeriods(periods: LocalPeriod[], duration: number): LocalPeriod[] {
+  return periods.map((p, i) => {
+    if (i === 0) {
+      return {
+        startTime: p.startTime,
+        endTime: toEndTime(p.startTime, duration),
+      }
+    }
+
+    const startTime = toEndTime(periods[i - 1].endTime, breakMins)
+
+    return { startTime, endTime: toEndTime(startTime, duration) }
+  })
+}
+
+type LocalPeriod = {
+  startTime: string
+  endTime: string
 }
