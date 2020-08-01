@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@prisma-labs/prettier-config": "^0.1.0",
-    "@prisma/cli": "^2.4.0-dev.26",
+    "@prisma/cli": "^2.4.0-dev.41",
     "@types/cookie": "^0.4.0",
     "@types/date-fns": "^2.6.0",
     "@types/jest": "^26.0.7",
