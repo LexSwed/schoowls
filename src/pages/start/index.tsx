@@ -18,9 +18,12 @@ import Timetable from '../../components/start/Timetable'
 const Start: React.FC = () => {
   return (
     <Center bg="gray.50">
-      <Stack p={6} px={8} spacing={4}>
+      <Stack p={6} px={8} spacing={6}>
         <Heading size="lg">Welcome! Let's put your first timetable</Heading>
         <Timetable />
+        <Flex justifyContent="flex-end">
+          <Button>Next</Button>
+        </Flex>
       </Stack>
     </Center>
   )
