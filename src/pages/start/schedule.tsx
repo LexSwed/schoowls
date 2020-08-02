@@ -1,7 +1,7 @@
 import React from 'react'
 import { Stack, Flex, Button } from '@chakra-ui/core'
 import Center from '../../components/Center'
-import SchedulePlanner from '../../components/start/Schedule'
+import { Schedule as SchedulePlanner } from '../../components/start'
 
 const Schedule: React.FC = () => {
   return (

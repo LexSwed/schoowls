@@ -44,29 +44,25 @@ export const createTimetable = extendType({
         }),
       },
       resolve: async (root, { periods }, ctx) => {
-        try {
-          const res = await ctx.db.timetable.create({
-            data: {
-              periods: {
-                create: periods,
+        const res = await ctx.db.timetable.create({
+          data: {
+            periods: {
+              create: periods,
+            },
+          },
+          select: {
+            id: true,
+            periods: {
+              select: {
+                id: true,
+                startTime: true,
+                duration: true,
               },
             },
-            select: {
-              id: true,
-              periods: {
-                select: {
-                  id: true,
-                  startTime: true,
-                  duration: true,
-                },
-              },
-            },
-          })
+          },
+        })
 
-          return res
-        } catch (error) {
-          return new Error('Failed to create a timetable')
-        }
+        return res
       },
     })
   },
