@@ -1,14 +1,14 @@
 import type { IncomingMessage } from 'http'
 import type { NowRequest, NowResponse } from '@vercel/node'
 
-import { encryptToken } from './cookie'
+import { decryptToken } from './cookie'
 import { getUserDetails } from '../db'
 
 export { authorize } from './authorize'
 
 export function isLoggedIn(req: IncomingMessage) {
   try {
-    return Boolean(encryptToken(req))
+    return Boolean(decryptToken(req))
   } finally {
     return false
   }
@@ -16,7 +16,7 @@ export function isLoggedIn(req: IncomingMessage) {
 
 export function getSession(req: IncomingMessage) {
   try {
-    return encryptToken(req)
+    return decryptToken(req)
   } catch (error) {
     console.error(error)
     return null
@@ -24,7 +24,7 @@ export function getSession(req: IncomingMessage) {
 }
 
 export async function getUserFromRequest(req: IncomingMessage | NowRequest) {
-  const data = encryptToken(req)
+  const data = decryptToken(req)
 
   const user = await getUserDetails({ email: data.email })
 
@@ -36,17 +36,13 @@ export const withSession = (handler: (req: NowRequest, res: NowResponse) => Prom
   res: NowResponse
 ) => {
   try {
-    Object.defineProperty(req, 'session', {
-      get() {
-        return encryptToken(req)
-      },
-    })
+    const token = decryptToken(req)
+
+    ;(req as any).session = token
 
     return handler(req, res)
   } catch (error) {
-    res.writeHead(301, { Location: '/login' })
+    res.writeHead(301, { Location: `/login?source=${req.url}` })
     res.end()
   }
 }
-
-type UserDetailsFromFE = { timeZone: string }

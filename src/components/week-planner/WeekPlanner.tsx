@@ -34,11 +34,6 @@ const WeekPlanner: React.FC = () => {
   )
 }
 
-function calcMinutes(boxY: number, mouseY: number) {
-  if (mouseY - boxY / 4) {
-  }
-}
-
 const DayColumn: React.FC<{ day: string }> = ({ day }) => {
   const touchStart = useRef<number>()
   const touchEnd = useRef<number>()

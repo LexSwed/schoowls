@@ -45,7 +45,7 @@ export const userQuery = extendType({
   definition(t) {
     t.field('me', {
       type: me,
-      resolve: (_root, args, ctx) => ctx.user,
+      resolve: (_root, args, ctx) => ctx.db.user.findOne({ where: { id: ctx.session.id } }),
     })
   },
 })

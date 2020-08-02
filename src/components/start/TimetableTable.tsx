@@ -51,7 +51,7 @@ const initial: LocalPeriod[] = Array(5)
     return res
   }, [] as LocalPeriod[])
 
-const Timetable: React.FC = () => {
+const TimetableTable: React.FC = () => {
   const [duration, setDuration] = useState(defaultDuration)
   const [periods, setPeriods] = useState<LocalPeriod[]>(initial)
 
@@ -62,46 +62,41 @@ const Timetable: React.FC = () => {
   }
 
   return (
-    <>
-      <Heading size="lg" mb={4}>
-        Welcome! Let's put your first timetable
-      </Heading>
-      <Grid templateColumns="1fr auto" gap={2} p={2}>
-        <Stack direction="column" spacing={2}>
-          <Grid display="grid" gridTemplateColumns="120px 120px" gridGap={2}>
-            <FormLabel id="start-time">Start time</FormLabel>
-            <FormLabel id="end-time">End time</FormLabel>
-          </Grid>
-          <Grid gridGap={4}>
-            {periods.map((p, i) => (
-              <TimetableRow
-                key={i}
-                {...p}
-                onChange={(startTime) =>
-                  setPeriods((periods) => {
-                    return [
-                      ...periods.slice(0, i),
-                      ...updatePeriods([{ startTime, endTime: p.endTime }, ...periods.slice(i + 1)], duration),
-                    ]
-                  })
-                }
-              />
-            ))}
-          </Grid>
-        </Stack>
+    <Grid templateColumns="1fr auto" gap={2} p={2}>
+      <Stack direction="column" spacing={2}>
+        <Grid display="grid" gridTemplateColumns="120px 120px" gridGap={2}>
+          <FormLabel id="start-time">Start time</FormLabel>
+          <FormLabel id="end-time">End time</FormLabel>
+        </Grid>
+        <Grid gridGap={4}>
+          {periods.map((p, i) => (
+            <TimetableRow
+              key={i}
+              {...p}
+              onChange={(startTime) =>
+                setPeriods((periods) => {
+                  return [
+                    ...periods.slice(0, i),
+                    ...updatePeriods([{ startTime, endTime: p.endTime }, ...periods.slice(i + 1)], duration),
+                  ]
+                })
+              }
+            />
+          ))}
+        </Grid>
+      </Stack>
 
-        <Stack spacing={2}>
-          <FormLabel htmlFor="duration">Duration</FormLabel>
-          <Select id="duration" value={toDuration(duration)} onChange={onDurationChange}>
-            {options}
-          </Select>
-        </Stack>
-      </Grid>
-    </>
+      <Stack spacing={2}>
+        <FormLabel htmlFor="duration">Duration</FormLabel>
+        <Select id="duration" value={toDuration(duration)} onChange={onDurationChange}>
+          {options}
+        </Select>
+      </Stack>
+    </Grid>
   )
 }
 
-export default Timetable
+export default TimetableTable
 
 function toDuration(minutes: number): string {
   if (minutes > 60) {

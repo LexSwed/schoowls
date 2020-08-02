@@ -3,11 +3,11 @@ import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 import { DateTime } from 'graphql-iso-date'
 
 import path from 'path'
-import { userQuery } from './user'
+import types from './schema'
 import { prisma } from '../db'
 
 export const schema = makeSchema({
-  types: [userQuery],
+  types,
   outputs: {
     schema: path.resolve('./server/graphql/generated/schema.graphql'),
     typegen: path.resolve('./server/graphql/generated/typings.d.ts'),

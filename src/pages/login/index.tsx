@@ -10,6 +10,18 @@ import Center from '../../components/Center'
 
 const Login = () => {
   const isAuth = useIsAuth()
+  const [source] = useState(() => {
+    if (typeof window === 'undefined') {
+      return null
+    }
+
+    const source = new URLSearchParams(window.location.search).get('source')
+    if (source) {
+      Router.replace(window.location.pathname)
+    }
+
+    return source
+  })
 
   if (isAuth) {
     Router.push('/')
@@ -17,9 +29,9 @@ const Login = () => {
 
   async function handleSuccess({ user, isNewUser }: AuthResponse) {
     if (isNewUser) {
-      Router.push('/start')
+      Router.push('/start/timetable')
     } else {
-      Router.push('/')
+      Router.push(source || '/')
     }
   }
 

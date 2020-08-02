@@ -14,7 +14,7 @@ const TOKEN_NAME = 'schoowls_token'
 const MAX_AGE = 60 * 60 * 24 * 3 // 3 days
 
 function createCookie(name: string, data: string, options: CookieSerializeOptions = {}) {
-  return serialize(`__Host-${name}`, data, {
+  return serialize(name, data, {
     maxAge: MAX_AGE,
     expires: new Date(Date.now() + MAX_AGE * 1000),
     secure: process.env.NODE_ENV === 'production',
@@ -52,7 +52,7 @@ export function getTokenCookie(req: IncomingMessage | NowRequest) {
   return cookies[TOKEN_NAME]
 }
 
-export function encryptToken(req: IncomingMessage | NowRequest) {
+export function decryptToken(req: IncomingMessage | NowRequest) {
   const token = getTokenCookie(req)
   const data = decrypt(token)
 

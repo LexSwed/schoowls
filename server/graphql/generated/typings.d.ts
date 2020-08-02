@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as Context from "./server/graphql/context"
+import * as Context from "../context"
 import { core, connectionPluginCore } from "@nexus/schema"
 
 declare global {
@@ -26,13 +26,29 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  PeriodInput: { // input type
+    duration: number; // Int!
+    startTime: string; // String!
+  }
+  PeriodWhereUniqueInput: { // input type
+    id?: number | null; // Int
+  }
 }
 
 export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
+  Mutation: {};
+  Period: { // root type
+    duration: number; // Int!
+    id: number; // Int!
+    startTime: string; // String!
+  }
   Query: {};
+  Timetable: { // root type
+    id: number; // Int!
+  }
   User: { // root type
     email: string; // String!
     id: number; // Int!
@@ -57,11 +73,25 @@ export interface NexusGenRootTypes {
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  PeriodInput: NexusGenInputs['PeriodInput'];
+  PeriodWhereUniqueInput: NexusGenInputs['PeriodWhereUniqueInput'];
 }
 
 export interface NexusGenFieldTypes {
+  Mutation: { // field return type
+    createTimetable: NexusGenRootTypes['Timetable']; // Timetable!
+  }
+  Period: { // field return type
+    duration: number; // Int!
+    id: number; // Int!
+    startTime: string; // String!
+  }
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
+  }
+  Timetable: { // field return type
+    id: number; // Int!
+    periods: NexusGenRootTypes['Period'][]; // [Period!]!
   }
   User: { // field return type
     avatar: NexusGenRootTypes['UserAvatar']; // UserAvatar!
@@ -83,6 +113,19 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    createTimetable: { // args
+      periods: NexusGenInputs['PeriodInput'][]; // [PeriodInput!]!
+    }
+  }
+  Timetable: {
+    periods: { // args
+      after?: NexusGenInputs['PeriodWhereUniqueInput'] | null; // PeriodWhereUniqueInput
+      before?: NexusGenInputs['PeriodWhereUniqueInput'] | null; // PeriodWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
@@ -90,9 +133,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Query" | "User" | "UserAvatar" | "UserPhone";
+export type NexusGenObjectNames = "Mutation" | "Period" | "Query" | "Timetable" | "User" | "UserAvatar" | "UserPhone";
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = "PeriodInput" | "PeriodWhereUniqueInput";
 
 export type NexusGenEnumNames = never;
 

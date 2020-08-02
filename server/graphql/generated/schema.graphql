@@ -4,8 +4,35 @@
 
 scalar DateTime
 
+type Mutation {
+  createTimetable(periods: [PeriodInput!]!): Timetable!
+}
+
+type Period {
+  duration: Int!
+  id: Int!
+  startTime: String!
+}
+
+input PeriodInput {
+  """Duration of the period in minutes"""
+  duration: Int!
+
+  """Start time of the period in HH:mm format"""
+  startTime: String!
+}
+
+input PeriodWhereUniqueInput {
+  id: Int
+}
+
 type Query {
   me: User!
+}
+
+type Timetable {
+  id: Int!
+  periods(after: PeriodWhereUniqueInput, before: PeriodWhereUniqueInput, first: Int, last: Int): [Period!]!
 }
 
 type User {
