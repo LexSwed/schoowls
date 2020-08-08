@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as Context from "../context"
+import * as Context from "./server/graphql/context"
 import { core, connectionPluginCore } from "@nexus/schema"
 
 declare global {
@@ -38,6 +38,15 @@ export interface NexusGenInputs {
 export interface NexusGenEnums {
 }
 
+export interface NexusGenScalars {
+  String: string
+  Int: number
+  Float: number
+  Boolean: boolean
+  ID: string
+  DateTime: any
+}
+
 export interface NexusGenRootTypes {
   Mutation: {};
   Period: { // root type
@@ -52,10 +61,10 @@ export interface NexusGenRootTypes {
   User: { // root type
     email: string; // String!
     id: number; // Int!
-    lastLoginAt?: any | null; // DateTime
+    lastLoginAt?: NexusGenScalars['DateTime'] | null; // DateTime
     name: string; // String!
     phoneNumber?: string | null; // String
-    registeredAt: any; // DateTime!
+    registeredAt: NexusGenScalars['DateTime']; // DateTime!
     timeZone?: string | null; // String
   }
   UserAvatar: { // root type
@@ -64,17 +73,17 @@ export interface NexusGenRootTypes {
   UserPhone: { // root type
     number?: string | null; // String
   }
-  String: string;
-  Int: number;
-  Float: number;
-  Boolean: boolean;
-  ID: string;
-  DateTime: any;
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   PeriodInput: NexusGenInputs['PeriodInput'];
   PeriodWhereUniqueInput: NexusGenInputs['PeriodWhereUniqueInput'];
+  String: NexusGenScalars['String'];
+  Int: NexusGenScalars['Int'];
+  Float: NexusGenScalars['Float'];
+  Boolean: NexusGenScalars['Boolean'];
+  ID: NexusGenScalars['ID'];
+  DateTime: NexusGenScalars['DateTime'];
 }
 
 export interface NexusGenFieldTypes {
@@ -97,11 +106,11 @@ export interface NexusGenFieldTypes {
     avatar: NexusGenRootTypes['UserAvatar']; // UserAvatar!
     email: string; // String!
     id: number; // Int!
-    lastLoginAt: any | null; // DateTime
+    lastLoginAt: NexusGenScalars['DateTime'] | null; // DateTime
     name: string; // String!
     phone: NexusGenRootTypes['UserPhone']; // UserPhone!
     phoneNumber: string | null; // String
-    registeredAt: any; // DateTime!
+    registeredAt: NexusGenScalars['DateTime']; // DateTime!
     timeZone: string | null; // String
   }
   UserAvatar: { // field return type

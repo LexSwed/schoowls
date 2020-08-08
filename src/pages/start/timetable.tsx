@@ -1,31 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Stack, Flex, Button, Heading } from '@chakra-ui/core'
 import { gql, useMutation } from '@apollo/client'
 import Router from 'next/router'
 
 import Center from '../../components/Center'
-import { Timetable } from '../../components/start'
-
-const createTimetableMutation = gql`
-  mutation createTimetable($periods: [PeriodInput!]!) {
-    createTimetable(periods: $periods) {
-      id
-      periods {
-        id
-        duration
-        startTime
-      }
-    }
-  }
-`
+import { Timetable, createTimetableMutation } from '../../components/start'
 
 const TimetableStart = () => {
   const [createTimetable] = useMutation(createTimetableMutation)
+  const [periods, setPeriods] = useState<PeriodInput[]>([])
 
   const handleNext = async () => {
-    const { data } = await createTimetable()
+    const { data, errors } = await createTimetable({
+      variables: {
+        periods,
+      },
+    })
 
-    Router.push('/schedule')
+    if (data) {
+      Router.push('/schedule')
+    }
+
+    if (errors) {
+      console.error(errors)
+    }
   }
 
   return (
@@ -34,7 +32,7 @@ const TimetableStart = () => {
         <Heading size="lg" mb={4}>
           Welcome! Let's put your first timetable
         </Heading>
-        <Timetable />
+        <Timetable periods={periods} onChange={setPeriods} />
         <Flex justifyContent="flex-end" mt={2}>
           <Button onClick={handleNext}>Next</Button>
         </Flex>
@@ -44,3 +42,8 @@ const TimetableStart = () => {
 }
 
 export default TimetableStart
+
+type PeriodInput = {
+  startTime: string
+  duration: number
+}
