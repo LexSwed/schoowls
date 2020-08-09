@@ -1,12 +1,8 @@
 import React from 'react'
 import { Input, Grid } from '@chakra-ui/core'
-import { Period, minutesToTime, timeToMinutes } from './utils'
+import { Period, timeToMinutes, formatTime } from './utils'
 
-const TimetableRow: React.FC<Period & { onChange: (startTime: string) => void }> = ({
-  startTime,
-  duration,
-  onChange,
-}) => {
+const Row: React.FC<Period & { onChange: (startTime: string) => void }> = ({ startTime, duration, onChange }) => {
   return (
     <Grid gridTemplateColumns="120px 120px" gridGap={2}>
       <Input
@@ -20,7 +16,7 @@ const TimetableRow: React.FC<Period & { onChange: (startTime: string) => void }>
       <Input
         aria-describedby="end-time"
         name="end-time"
-        value={minutesToTime(timeToMinutes(startTime) + duration)}
+        value={formatTime(timeToMinutes(startTime) + duration)}
         isReadOnly
         type="time"
         step={300}
@@ -29,4 +25,4 @@ const TimetableRow: React.FC<Period & { onChange: (startTime: string) => void }>
   )
 }
 
-export default TimetableRow
+export default Row

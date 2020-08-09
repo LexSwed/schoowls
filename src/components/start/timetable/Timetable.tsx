@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { Stack, FormLabel, Select, Grid } from '@chakra-ui/core'
 
 import Row from './Row'
-import { Period, DURATION, minutesToTime, timeToMinutes } from './utils'
+import { Period, DURATION, timeToMinutes, initialPeriods, shiftPeriods } from './utils'
 
 const options = ['30', '35', '40', '45', '60', '1:20', '1:25', '1:30'].map((t) => (
-  <option key={t} value={t}>
+  <option key={t} value={timeToMinutes(t)}>
     {t}
   </option>
 ))
@@ -18,13 +18,9 @@ const Timetable: React.FC<{
 
   useEffect(() => {
     if (periods.length === 0) {
-      onChange(initialPeriodInputs)
+      onChange(initialPeriods)
     }
   }, [])
-
-  useEffect(() => {
-    onChange(periods.map((p) => ({ ...p, duration })))
-  }, [duration])
 
   return (
     <Grid templateColumns="1fr auto" gap={2} p={2}>
@@ -39,7 +35,9 @@ const Timetable: React.FC<{
               key={i}
               {...p}
               onChange={(startTime) => {
-                onChange([...periods.slice(0, i), { ...p, startTime }, ...periods.slice(i + 1)])
+                const shifted = shiftPeriods({ ...p, startTime }, i, periods)
+
+                onChange(shifted)
               }}
             />
           ))}
@@ -50,8 +48,12 @@ const Timetable: React.FC<{
         <FormLabel htmlFor="duration">Duration</FormLabel>
         <Select
           id="duration"
-          value={minutesToTime(duration)}
-          onChange={(e) => setDuration(timeToMinutes(e.target.value))}
+          value={duration}
+          onChange={(e) => {
+            const duration = parseInt(e.target.value, 10)
+            setDuration(duration)
+            onChange(periods.map((p) => ({ ...p, duration })))
+          }}
         >
           {options}
         </Select>
