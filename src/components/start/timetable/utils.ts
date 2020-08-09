@@ -51,10 +51,9 @@ export function shiftPeriods(newPeriod: Period, newPeriodIndex: number, periods:
     newPeriod,
     ...periods
       .slice(newPeriodIndex + 1)
-      .map((p, i) =>
-        i === newPeriodIndex
-          ? newPeriod
-          : { startTime: formatTime(timeToMinutes(p.startTime) + newPeriodStartTimeDelta), duration: p.duration }
-      ),
+      .map((p, i) => ({
+        startTime: formatTime(timeToMinutes(p.startTime) + newPeriodStartTimeDelta),
+        duration: p.duration,
+      })),
   ]
 }

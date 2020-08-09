@@ -30,7 +30,7 @@ const TimetableStart = () => {
     <Center bg="gray.50">
       <Stack p={6} px={8} spacing={6}>
         <Heading size="lg" mb={4}>
-          Welcome! Let's put your first timetable
+          Let's create your first timetable
         </Heading>
         <Timetable periods={periods} onChange={setPeriods} />
         <Flex justifyContent="flex-end" mt={2}>

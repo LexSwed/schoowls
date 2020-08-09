@@ -51,8 +51,8 @@ const Timetable: React.FC<{
           value={duration}
           onChange={(e) => {
             const duration = parseInt(e.target.value, 10)
+
             setDuration(duration)
-            onChange(periods.map((p) => ({ ...p, duration })))
           }}
         >
           {options}
