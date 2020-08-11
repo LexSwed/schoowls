@@ -54,7 +54,7 @@ const Timetable: React.FC<{
             const durationDelta = newDuration - duration
             const shifted = periods.map((p, i) => ({
               duration: newDuration,
-              startTime: i === 0 ? p.startTime : formatTime(timeToMinutes(p.startTime) + durationDelta),
+              startTime: formatTime(timeToMinutes(p.startTime) + durationDelta * i),
             }))
 
             setDuration(newDuration)
