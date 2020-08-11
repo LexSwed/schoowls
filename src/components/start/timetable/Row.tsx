@@ -20,6 +20,7 @@ const Row: React.FC<Period & { onChange: (startTime: string) => void }> = ({ sta
         isReadOnly
         type="time"
         step={300}
+        tabIndex={-1}
       />
     </Grid>
   )

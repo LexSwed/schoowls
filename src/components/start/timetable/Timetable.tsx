@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Stack, FormLabel, Select, Grid } from '@chakra-ui/core'
+import { Stack, FormLabel, Select, Grid, IconButton } from '@chakra-ui/core'
 
 import Row from './Row'
 import { Period, DURATION, timeToMinutes, initialPeriods, shiftPeriods, formatTime } from './utils'
@@ -41,28 +41,36 @@ const Timetable: React.FC<{
               }}
             />
           ))}
+          <IconButton aria-label="Add one more period" icon="add" />
         </Grid>
       </Stack>
 
       <Stack spacing={2}>
         <FormLabel htmlFor="duration">Duration</FormLabel>
-        <Select
-          id="duration"
-          value={duration}
-          onChange={(e) => {
-            const newDuration = parseInt(e.target.value, 10)
-            const durationDelta = newDuration - duration
-            const shifted = periods.map((p, i) => ({
-              duration: newDuration,
-              startTime: formatTime(timeToMinutes(p.startTime) + durationDelta * i),
-            }))
+        <Stack spacing={4} alignItems="flex-start">
+          <Select
+            id="duration"
+            value={duration}
+            onChange={(e) => {
+              const newDuration = parseInt(e.target.value, 10)
+              const durationDelta = newDuration - duration
+              const shifted = periods.map((p, i) => ({
+                duration: newDuration,
+                startTime: formatTime(timeToMinutes(p.startTime) + durationDelta * i),
+              }))
 
-            setDuration(newDuration)
-            onChange(shifted)
-          }}
-        >
-          {options}
-        </Select>
+              setDuration(newDuration)
+              onChange(shifted)
+            }}
+          >
+            {options}
+          </Select>
+          {/* {Array(periods.length - 1)
+            .fill(null)
+            .map((el, i) => (
+              <IconButton aria-label={`Delete ${i} period`} icon="delete" size="sm" />
+            ))} */}
+        </Stack>
       </Stack>
     </Grid>
   )
