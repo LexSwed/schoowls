@@ -1,10 +1,12 @@
 import React from 'react'
-import { Input, Grid } from '@chakra-ui/core'
+import { Input, IconButton } from '@chakra-ui/core'
 import { Period, timeToMinutes, formatTime } from './utils'
 
-const Row: React.FC<Period & { onChange: (startTime: string) => void }> = ({ startTime, duration, onChange }) => {
+type Props = Period & { onChange: (startTime: string) => void }
+
+const Row: React.FC<Props> = ({ startTime, duration, onChange, children }) => {
   return (
-    <Grid gridTemplateColumns="120px 120px" gridGap={2}>
+    <>
       <Input
         aria-describedby="start-time"
         name="start-time"
@@ -22,7 +24,8 @@ const Row: React.FC<Period & { onChange: (startTime: string) => void }> = ({ sta
         step={300}
         tabIndex={-1}
       />
-    </Grid>
+      {children}
+    </>
   )
 }
 
