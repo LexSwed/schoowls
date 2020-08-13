@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Stack, FormLabel, Select, Grid, IconButton, Button } from '@chakra-ui/core'
+import { Stack, FormLabel, Select, Grid, IconButton } from '@chakra-ui/core'
 
 import Row from './Row'
 import { Period, DURATION, timeToMinutes, initialPeriods, shiftPeriods, formatTime } from './utils'
@@ -59,8 +59,16 @@ const Timetable: React.FC<{
                 >
                   {options}
                 </Select>
+              ) : i === periods.length - 1 ? (
+                <IconButton
+                  aria-label={`Delete ${i} period`}
+                  icon="delete"
+                  onClick={() => {
+                    onChange(periods.slice(0, periods.length - 1))
+                  }}
+                />
               ) : (
-                <Button leftIcon="delete">{`Delete ${i} period`}</Button>
+                <div />
               )}
             </Row>
           ))}
