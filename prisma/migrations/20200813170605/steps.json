@@ -1,0 +1,65 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Teacher",
+      "field": "timetables",
+      "type": "Timetable",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Timetable",
+      "field": "creator",
+      "type": "Teacher",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Timetable",
+          "field": "creator"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Timetable",
+          "field": "creator"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[teacherId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Timetable",
+          "field": "creator"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Timetable",
+      "field": "teacherId",
+      "type": "Int",
+      "arity": "Required"
+    }
+  ]
+}

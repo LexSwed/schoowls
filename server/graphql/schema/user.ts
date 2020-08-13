@@ -1,7 +1,7 @@
 import { extendType, objectType } from '@nexus/schema'
-import { User } from '@prisma/client'
+import { User as DbUser } from '@prisma/client'
 
-const userAvatar = objectType({
+export const userAvatar = objectType({
   name: 'UserAvatar',
   definition(t) {
     t.string('url', {
@@ -10,7 +10,7 @@ const userAvatar = objectType({
   },
 })
 
-const userPhone = objectType({
+export const userPhone = objectType({
   name: 'UserPhone',
   definition(t) {
     t.string('number', {
@@ -19,7 +19,7 @@ const userPhone = objectType({
   },
 })
 
-const me = objectType({
+export const User = objectType({
   name: 'User',
   definition(t) {
     t.model.id()
@@ -29,11 +29,11 @@ const me = objectType({
     t.model.timeZone()
     t.field('phone', {
       type: userPhone,
-      resolve: (parent: User) => ({ number: parent.phoneNumber }),
+      resolve: (parent: DbUser) => ({ number: parent.phoneNumber }),
     })
     t.field('avatar', {
       type: userAvatar,
-      resolve: (parent: User) => ({ url: parent.avatarUrl }),
+      resolve: (parent: DbUser) => ({ url: parent.avatarUrl }),
     })
     t.model.lastLoginAt()
     t.model.registeredAt()
@@ -44,7 +44,7 @@ export const userQuery = extendType({
   type: 'Query',
   definition(t) {
     t.field('me', {
-      type: me,
+      type: User,
       resolve: (_root, args, ctx) => ctx.db.user.findOne({ where: { id: ctx.session.id } }),
     })
   },

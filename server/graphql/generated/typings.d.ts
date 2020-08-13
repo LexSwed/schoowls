@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as Context from "./server/graphql/context"
+import * as Context from "../context"
 import { core, connectionPluginCore } from "@nexus/schema"
 
 declare global {
@@ -49,6 +49,12 @@ export interface NexusGenScalars {
 
 export interface NexusGenRootTypes {
   Mutation: {};
+  PageInfo: { // root type
+    endCursor?: string | null; // String
+    hasNextPage: boolean; // Boolean!
+    hasPreviousPage: boolean; // Boolean!
+    startCursor?: string | null; // String
+  }
   Period: { // root type
     duration: number; // Int!
     id: number; // Int!
@@ -57,6 +63,14 @@ export interface NexusGenRootTypes {
   Query: {};
   Timetable: { // root type
     id: number; // Int!
+  }
+  TimetableConnection: { // root type
+    edges?: Array<NexusGenRootTypes['TimetableEdge'] | null> | null; // [TimetableEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  TimetableEdge: { // root type
+    cursor: string; // String!
+    node: NexusGenRootTypes['Timetable']; // Timetable!
   }
   User: { // root type
     email: string; // String!
@@ -90,6 +104,12 @@ export interface NexusGenFieldTypes {
   Mutation: { // field return type
     createTimetable: NexusGenRootTypes['Timetable']; // Timetable!
   }
+  PageInfo: { // field return type
+    endCursor: string | null; // String
+    hasNextPage: boolean; // Boolean!
+    hasPreviousPage: boolean; // Boolean!
+    startCursor: string | null; // String
+  }
   Period: { // field return type
     duration: number; // Int!
     id: number; // Int!
@@ -97,10 +117,19 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     me: NexusGenRootTypes['User']; // User!
+    timetables: NexusGenRootTypes['TimetableConnection']; // TimetableConnection!
   }
   Timetable: { // field return type
     id: number; // Int!
     periods: NexusGenRootTypes['Period'][]; // [Period!]!
+  }
+  TimetableConnection: { // field return type
+    edges: Array<NexusGenRootTypes['TimetableEdge'] | null> | null; // [TimetableEdge]
+    pageInfo: NexusGenRootTypes['PageInfo']; // PageInfo!
+  }
+  TimetableEdge: { // field return type
+    cursor: string; // String!
+    node: NexusGenRootTypes['Timetable']; // Timetable!
   }
   User: { // field return type
     avatar: NexusGenRootTypes['UserAvatar']; // UserAvatar!
@@ -127,6 +156,14 @@ export interface NexusGenArgTypes {
       periods: NexusGenInputs['PeriodInput'][]; // [PeriodInput!]!
     }
   }
+  Query: {
+    timetables: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
   Timetable: {
     periods: { // args
       after?: NexusGenInputs['PeriodWhereUniqueInput'] | null; // PeriodWhereUniqueInput
@@ -142,7 +179,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "Period" | "Query" | "Timetable" | "User" | "UserAvatar" | "UserPhone";
+export type NexusGenObjectNames = "Mutation" | "PageInfo" | "Period" | "Query" | "Timetable" | "TimetableConnection" | "TimetableEdge" | "User" | "UserAvatar" | "UserPhone";
 
 export type NexusGenInputNames = "PeriodInput" | "PeriodWhereUniqueInput";
 

@@ -1,6 +1,6 @@
-import { extendType, objectType, intArg, arg, inputObjectType } from '@nexus/schema'
+import { extendType, objectType, arg, inputObjectType } from '@nexus/schema'
 
-export const period = objectType({
+export const Period = objectType({
   name: 'Period',
   definition(t) {
     t.model.id()
@@ -9,11 +9,12 @@ export const period = objectType({
   },
 })
 
-export const timetable = objectType({
+export const Timetable = objectType({
   name: 'Timetable',
   definition(t) {
     t.model.id()
     t.model.periods()
+    t.model.creator()
   },
 })
 
@@ -31,11 +32,27 @@ export const periodInput = inputObjectType({
   },
 })
 
+export const getTimetable = extendType({
+  type: 'Query',
+  definition(t) {
+    t.connectionField('timetables', {
+      type: Timetable,
+      nodes(root, args, { db, session }) {
+        return db.timetable.findMany({
+          where: {
+            teacherId: session.id,
+          },
+        })
+      },
+    })
+  },
+})
+
 export const createTimetable = extendType({
   type: 'Mutation',
   definition(t) {
     t.field('createTimetable', {
-      type: timetable,
+      type: Timetable,
       args: {
         periods: arg({
           type: periodInput,
