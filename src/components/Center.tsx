@@ -1,11 +1,12 @@
-import styled from '@emotion/styled'
+import React from 'react'
 import { Box } from '@chakra-ui/core'
 
-const Center = styled(Box)`
-  display: grid;
-  place-items: center;
-  height: 100vh;
-  width: 100vw;
-`
+const Center: React.FC = ({ children }) => {
+  return (
+    <Box pt="20vh" display="flex" justifyContent="center">
+      {children}
+    </Box>
+  )
+}
 
 export default Center

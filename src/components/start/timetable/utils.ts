@@ -13,10 +13,8 @@ export const initialPeriods: Period[] = Array(5)
         duration: DURATION,
       })
     } else {
-      const startMins = timeToMinutes(res[i - 1].startTime) + res[i - 1].duration + BREAK_MINS
-
       res.push({
-        startTime: formatTime(startMins),
+        startTime: nextStartTime(res[i - 1]),
         duration: DURATION,
       })
     }
@@ -49,11 +47,13 @@ export function shiftPeriods(newPeriod: Period, newPeriodIndex: number, periods:
   return [
     ...periods.slice(0, newPeriodIndex),
     newPeriod,
-    ...periods
-      .slice(newPeriodIndex + 1)
-      .map((p, i) => ({
-        startTime: formatTime(timeToMinutes(p.startTime) + newPeriodStartTimeDelta),
-        duration: p.duration,
-      })),
+    ...periods.slice(newPeriodIndex + 1).map((p, i) => ({
+      startTime: formatTime(timeToMinutes(p.startTime) + newPeriodStartTimeDelta),
+      duration: p.duration,
+    })),
   ]
+}
+
+export function nextStartTime(period: Period): string {
+  return formatTime(timeToMinutes(period.startTime) + period.duration + BREAK_MINS)
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Stack, FormLabel, Select, Grid, IconButton } from '@chakra-ui/core'
 
 import Row from './Row'
-import { Period, DURATION, timeToMinutes, initialPeriods, shiftPeriods, formatTime } from './utils'
+import { Period, DURATION, timeToMinutes, initialPeriods, shiftPeriods, formatTime, nextStartTime } from './utils'
 
 const options = ['30', '35', '40', '45', '60', '1:20', '1:25', '1:30'].map((t) => (
   <option key={t} value={timeToMinutes(t)}>
@@ -72,7 +72,20 @@ const Timetable: React.FC<{
               )}
             </Row>
           ))}
-          <IconButton aria-label="Add one more period" icon="add" />
+          <IconButton
+            aria-label="Add one more period"
+            icon="add"
+            gridColumn="span 2"
+            onClick={() => {
+              onChange([
+                ...periods,
+                {
+                  startTime: nextStartTime(periods[periods.length - 1]),
+                  duration,
+                },
+              ])
+            }}
+          />
         </Grid>
       </Stack>
     </Grid>
