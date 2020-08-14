@@ -33,6 +33,9 @@ export interface NexusGenInputs {
   PeriodWhereUniqueInput: { // input type
     id?: number | null; // Int
   }
+  TimetableWhereUniqueInput: { // input type
+    id?: number | null; // Int
+  }
 }
 
 export interface NexusGenEnums {
@@ -61,6 +64,7 @@ export interface NexusGenRootTypes {
     startTime: string; // String!
   }
   Query: {};
+  Teacher: {};
   Timetable: { // root type
     id: number; // Int!
   }
@@ -92,6 +96,7 @@ export interface NexusGenRootTypes {
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   PeriodInput: NexusGenInputs['PeriodInput'];
   PeriodWhereUniqueInput: NexusGenInputs['PeriodWhereUniqueInput'];
+  TimetableWhereUniqueInput: NexusGenInputs['TimetableWhereUniqueInput'];
   String: NexusGenScalars['String'];
   Int: NexusGenScalars['Int'];
   Float: NexusGenScalars['Float'];
@@ -119,7 +124,12 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User']; // User!
     timetables: NexusGenRootTypes['TimetableConnection']; // TimetableConnection!
   }
+  Teacher: { // field return type
+    timetables: NexusGenRootTypes['Timetable'][]; // [Timetable!]!
+    user: NexusGenRootTypes['User']; // User!
+  }
   Timetable: { // field return type
+    creator: NexusGenRootTypes['Teacher']; // Teacher!
     id: number; // Int!
     periods: NexusGenRootTypes['Period'][]; // [Period!]!
   }
@@ -164,6 +174,14 @@ export interface NexusGenArgTypes {
       last?: number | null; // Int
     }
   }
+  Teacher: {
+    timetables: { // args
+      after?: NexusGenInputs['TimetableWhereUniqueInput'] | null; // TimetableWhereUniqueInput
+      before?: NexusGenInputs['TimetableWhereUniqueInput'] | null; // TimetableWhereUniqueInput
+      first?: number | null; // Int
+      last?: number | null; // Int
+    }
+  }
   Timetable: {
     periods: { // args
       after?: NexusGenInputs['PeriodWhereUniqueInput'] | null; // PeriodWhereUniqueInput
@@ -179,9 +197,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Mutation" | "PageInfo" | "Period" | "Query" | "Timetable" | "TimetableConnection" | "TimetableEdge" | "User" | "UserAvatar" | "UserPhone";
+export type NexusGenObjectNames = "Mutation" | "PageInfo" | "Period" | "Query" | "Teacher" | "Timetable" | "TimetableConnection" | "TimetableEdge" | "User" | "UserAvatar" | "UserPhone";
 
-export type NexusGenInputNames = "PeriodInput" | "PeriodWhereUniqueInput";
+export type NexusGenInputNames = "PeriodInput" | "PeriodWhereUniqueInput" | "TimetableWhereUniqueInput";
 
 export type NexusGenEnumNames = never;
 

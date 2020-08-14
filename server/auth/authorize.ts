@@ -31,13 +31,17 @@ export const authorize = async (didToken: string, userDetails: UserDetailsFromFE
 const signup = async (metadata: MagicUserMetadata, { timeZone, name }: UserDetailsFromFE) => {
   const signUpDate = new Date().toISOString()
 
-  return await prisma.user.create({
+  return await prisma.teacher.create({
     data: {
-      name,
-      email: metadata.email,
-      registeredAt: signUpDate,
-      lastLoginAt: signUpDate,
-      timeZone,
+      user: {
+        create: {
+          name,
+          email: metadata.email,
+          registeredAt: signUpDate,
+          lastLoginAt: signUpDate,
+          timeZone,
+        },
+      },
     },
   })
 }

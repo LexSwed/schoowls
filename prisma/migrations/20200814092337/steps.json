@@ -273,16 +273,23 @@
       "tag": "CreateField",
       "model": "Teacher",
       "field": "classes",
-      "type": "TechingClass",
+      "type": "TechingCourse",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Teacher",
+      "field": "timetables",
+      "type": "Timetable",
       "arity": "List"
     },
     {
       "tag": "CreateModel",
-      "model": "TechingClass"
+      "model": "TechingCourse"
     },
     {
       "tag": "CreateField",
-      "model": "TechingClass",
+      "model": "TechingCourse",
       "field": "id",
       "type": "Int",
       "arity": "Required"
@@ -292,7 +299,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
+          "model": "TechingCourse",
           "field": "id"
         },
         "directive": "id"
@@ -303,7 +310,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
+          "model": "TechingCourse",
           "field": "id"
         },
         "directive": "default"
@@ -315,7 +322,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
+          "model": "TechingCourse",
           "field": "id"
         },
         "directive": "default"
@@ -325,9 +332,9 @@
     },
     {
       "tag": "CreateField",
-      "model": "TechingClass",
-      "field": "class",
-      "type": "Class",
+      "model": "TechingCourse",
+      "field": "course",
+      "type": "Course",
       "arity": "Required"
     },
     {
@@ -335,8 +342,8 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
-          "field": "class"
+          "model": "TechingCourse",
+          "field": "course"
         },
         "directive": "relation"
       }
@@ -347,13 +354,13 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
-          "field": "class"
+          "model": "TechingCourse",
+          "field": "course"
         },
         "directive": "relation"
       },
       "argument": "fields",
-      "value": "[classId]"
+      "value": "[courseId]"
     },
     {
       "tag": "CreateArgument",
@@ -361,8 +368,8 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
-          "field": "class"
+          "model": "TechingCourse",
+          "field": "course"
         },
         "directive": "relation"
       },
@@ -371,14 +378,14 @@
     },
     {
       "tag": "CreateField",
-      "model": "TechingClass",
-      "field": "classId",
+      "model": "TechingCourse",
+      "field": "courseId",
       "type": "Int",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "TechingClass",
+      "model": "TechingCourse",
       "field": "teacher",
       "type": "Teacher",
       "arity": "Required"
@@ -388,7 +395,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
+          "model": "TechingCourse",
           "field": "teacher"
         },
         "directive": "relation"
@@ -400,7 +407,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
+          "model": "TechingCourse",
           "field": "teacher"
         },
         "directive": "relation"
@@ -414,7 +421,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
+          "model": "TechingCourse",
           "field": "teacher"
         },
         "directive": "relation"
@@ -424,16 +431,16 @@
     },
     {
       "tag": "CreateField",
-      "model": "TechingClass",
+      "model": "TechingCourse",
       "field": "teacherId",
       "type": "Int",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "TechingClass",
+      "model": "TechingCourse",
       "field": "schedule",
-      "type": "TechingClassSchedule",
+      "type": "TechingCourseSchedule",
       "arity": "Required"
     },
     {
@@ -441,7 +448,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
+          "model": "TechingCourse",
           "field": "schedule"
         },
         "directive": "relation"
@@ -453,7 +460,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
+          "model": "TechingCourse",
           "field": "schedule"
         },
         "directive": "relation"
@@ -467,7 +474,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "TechingClass",
+          "model": "TechingCourse",
           "field": "schedule"
         },
         "directive": "relation"
@@ -477,32 +484,32 @@
     },
     {
       "tag": "CreateField",
-      "model": "TechingClass",
+      "model": "TechingCourse",
       "field": "scheduleId",
       "type": "Int",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "TechingClass",
+      "model": "TechingCourse",
       "field": "color",
       "type": "String",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "TechingClass",
+      "model": "TechingCourse",
       "field": "lessons",
       "type": "Lesson",
       "arity": "List"
     },
     {
       "tag": "CreateModel",
-      "model": "Class"
+      "model": "Course"
     },
     {
       "tag": "CreateField",
-      "model": "Class",
+      "model": "Course",
       "field": "id",
       "type": "Int",
       "arity": "Required"
@@ -512,7 +519,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Class",
+          "model": "Course",
           "field": "id"
         },
         "directive": "id"
@@ -523,7 +530,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Class",
+          "model": "Course",
           "field": "id"
         },
         "directive": "default"
@@ -535,7 +542,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "Class",
+          "model": "Course",
           "field": "id"
         },
         "directive": "default"
@@ -545,7 +552,7 @@
     },
     {
       "tag": "CreateField",
-      "model": "Class",
+      "model": "Course",
       "field": "name",
       "type": "String",
       "arity": "Required"
@@ -555,7 +562,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "Class",
+          "model": "Course",
           "field": "name"
         },
         "directive": "unique"
@@ -563,25 +570,32 @@
     },
     {
       "tag": "CreateField",
-      "model": "Class",
-      "field": "techingClasses",
-      "type": "TechingClass",
+      "model": "Course",
+      "field": "topics",
+      "type": "Topic",
       "arity": "List"
     },
     {
       "tag": "CreateField",
-      "model": "Class",
-      "field": "plan",
-      "type": "StudyPlan",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateModel",
-      "model": "TechingClassSchedule"
+      "model": "Course",
+      "field": "grade",
+      "type": "Int",
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
-      "model": "TechingClassSchedule",
+      "model": "Course",
+      "field": "techingCourse",
+      "type": "TechingCourse",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Timetable"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Timetable",
       "field": "id",
       "type": "Int",
       "arity": "Required"
@@ -591,7 +605,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "TechingClassSchedule",
+          "model": "Timetable",
           "field": "id"
         },
         "directive": "id"
@@ -602,7 +616,7 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "TechingClassSchedule",
+          "model": "Timetable",
           "field": "id"
         },
         "directive": "default"
@@ -614,7 +628,7 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "TechingClassSchedule",
+          "model": "Timetable",
           "field": "id"
         },
         "directive": "default"
@@ -624,37 +638,16 @@
     },
     {
       "tag": "CreateField",
-      "model": "TechingClassSchedule",
-      "field": "class",
-      "type": "TechingClass",
-      "arity": "Required"
+      "model": "Timetable",
+      "field": "periods",
+      "type": "Period",
+      "arity": "List"
     },
     {
       "tag": "CreateField",
-      "model": "TechingClassSchedule",
-      "field": "startDate",
-      "type": "DateTime",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "TechingClassSchedule",
-      "field": "endDate",
-      "type": "DateTime",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "TechingClassSchedule",
-      "field": "repeatsEvery",
-      "type": "Int",
-      "arity": "Optional"
-    },
-    {
-      "tag": "CreateField",
-      "model": "TechingClassSchedule",
-      "field": "repetition",
-      "type": "String",
+      "model": "Timetable",
+      "field": "creator",
+      "type": "Teacher",
       "arity": "Required"
     },
     {
@@ -662,8 +655,76 @@
       "location": {
         "path": {
           "tag": "Field",
-          "model": "TechingClassSchedule",
-          "field": "repetition"
+          "model": "Timetable",
+          "field": "creator"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Timetable",
+          "field": "creator"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[teacherId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Timetable",
+          "field": "creator"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[userId]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Timetable",
+      "field": "teacherId",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "TechingCourseSchedule"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TechingCourseSchedule",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "TechingCourseSchedule",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "TechingCourseSchedule",
+          "field": "id"
         },
         "directive": "default"
       }
@@ -674,27 +735,94 @@
         "tag": "Directive",
         "path": {
           "tag": "Field",
-          "model": "TechingClassSchedule",
-          "field": "repetition"
+          "model": "TechingCourseSchedule",
+          "field": "id"
         },
         "directive": "default"
       },
       "argument": "",
-      "value": "\"week\""
+      "value": "autoincrement()"
     },
     {
       "tag": "CreateField",
-      "model": "TechingClassSchedule",
-      "field": "startTime",
-      "type": "String",
+      "model": "TechingCourseSchedule",
+      "field": "class",
+      "type": "TechingCourse",
       "arity": "Required"
     },
     {
       "tag": "CreateField",
-      "model": "TechingClassSchedule",
-      "field": "durationMinutes",
+      "model": "TechingCourseSchedule",
+      "field": "startDate",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TechingCourseSchedule",
+      "field": "endDate",
+      "type": "DateTime",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TechingCourseSchedule",
+      "field": "day",
       "type": "Int",
-      "arity": "Required"
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TechingCourseSchedule",
+      "field": "period",
+      "type": "Period",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "TechingCourseSchedule",
+          "field": "period"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "TechingCourseSchedule",
+          "field": "period"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[periodId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "TechingCourseSchedule",
+          "field": "period"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "TechingCourseSchedule",
+      "field": "periodId",
+      "type": "Int",
+      "arity": "Optional"
     },
     {
       "tag": "CreateModel",
@@ -746,68 +874,8 @@
     {
       "tag": "CreateField",
       "model": "Lesson",
-      "field": "class",
-      "type": "TechingClass",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "Lesson",
-          "field": "class"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Lesson",
-          "field": "class"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[classId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "Lesson",
-          "field": "class"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Lesson",
-      "field": "classId",
-      "type": "Int",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Lesson",
       "field": "title",
       "type": "String",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateField",
-      "model": "Lesson",
-      "field": "date",
-      "type": "DateTime",
       "arity": "Required"
     },
     {
@@ -823,6 +891,59 @@
       "field": "topics",
       "type": "Topic",
       "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Lesson",
+      "field": "techingCourse",
+      "type": "TechingCourse",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Lesson",
+          "field": "techingCourse"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Lesson",
+          "field": "techingCourse"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[techingCourseId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Lesson",
+          "field": "techingCourse"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Lesson",
+      "field": "techingCourseId",
+      "type": "Int",
+      "arity": "Optional"
     },
     {
       "tag": "CreateModel",
@@ -874,60 +995,14 @@
     {
       "tag": "CreateField",
       "model": "StudyPlan",
-      "field": "class",
-      "type": "Class",
-      "arity": "Required"
-    },
-    {
-      "tag": "CreateDirective",
-      "location": {
-        "path": {
-          "tag": "Field",
-          "model": "StudyPlan",
-          "field": "class"
-        },
-        "directive": "relation"
-      }
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "StudyPlan",
-          "field": "class"
-        },
-        "directive": "relation"
-      },
-      "argument": "fields",
-      "value": "[classId]"
-    },
-    {
-      "tag": "CreateArgument",
-      "location": {
-        "tag": "Directive",
-        "path": {
-          "tag": "Field",
-          "model": "StudyPlan",
-          "field": "class"
-        },
-        "directive": "relation"
-      },
-      "argument": "references",
-      "value": "[id]"
-    },
-    {
-      "tag": "CreateField",
-      "model": "StudyPlan",
-      "field": "classId",
+      "field": "grade",
       "type": "Int",
-      "arity": "Required"
+      "arity": "Optional"
     },
     {
       "tag": "CreateField",
       "model": "StudyPlan",
-      "field": "topics",
+      "field": "topic",
       "type": "Topic",
       "arity": "List"
     },
@@ -1095,6 +1170,180 @@
       "tag": "CreateField",
       "model": "Topic",
       "field": "lessonId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Topic",
+      "field": "course",
+      "type": "Course",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Topic",
+          "field": "course"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Topic",
+          "field": "course"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[courseId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Topic",
+          "field": "course"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Topic",
+      "field": "courseId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateModel",
+      "model": "Period"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Period",
+      "field": "id",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Period",
+          "field": "id"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Period",
+          "field": "id"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Period",
+          "field": "id"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Period",
+      "field": "startTime",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Period",
+      "field": "duration",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Period",
+      "field": "techingCourseSchedule",
+      "type": "TechingCourseSchedule",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Period",
+      "field": "timetable",
+      "type": "Timetable",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Period",
+          "field": "timetable"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Period",
+          "field": "timetable"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[timetableId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Period",
+          "field": "timetable"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Period",
+      "field": "timetableId",
       "type": "Int",
       "arity": "Optional"
     }

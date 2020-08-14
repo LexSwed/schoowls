@@ -1,7 +1,6 @@
 import { ApolloServer } from 'apollo-server-micro'
 import { withSession } from '../server/auth'
-import { schema } from '../server/graphql'
-import { context } from '../server/graphql/context'
+import { schema, context } from '../server/graphql'
 
 const isProd = process.env.NODE_ENV === 'production'
 

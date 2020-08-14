@@ -68,7 +68,13 @@ type Query {
   ): TimetableConnection!
 }
 
+type Teacher {
+  timetables(after: TimetableWhereUniqueInput, before: TimetableWhereUniqueInput, first: Int, last: Int): [Timetable!]!
+  user: User!
+}
+
 type Timetable {
+  creator: Teacher!
   id: Int!
   periods(after: PeriodWhereUniqueInput, before: PeriodWhereUniqueInput, first: Int, last: Int): [Period!]!
 }
@@ -91,6 +97,10 @@ type TimetableEdge {
 
   """https://facebook.github.io/relay/graphql/connections.htm#sec-Node"""
   node: Timetable!
+}
+
+input TimetableWhereUniqueInput {
+  id: Int
 }
 
 type User {

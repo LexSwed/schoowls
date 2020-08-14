@@ -43,6 +43,7 @@ const LoginForm: React.FC<Props> = ({ onSuccess }) => {
 
       if (!isExists && (!fullname || fullname?.value?.length === 0)) {
         toast({
+          position: 'top',
           title: "Seems like it's your first sign in",
           description: 'Can you tell us how can we refer to you?',
           status: 'info',

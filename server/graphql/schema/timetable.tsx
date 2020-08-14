@@ -1,4 +1,5 @@
 import { extendType, objectType, arg, inputObjectType } from '@nexus/schema'
+import type { Context } from '../context'
 
 export const Period = objectType({
   name: 'Period',
@@ -6,6 +7,14 @@ export const Period = objectType({
     t.model.id()
     t.model.duration()
     t.model.startTime()
+  },
+})
+
+export const Teacher = objectType({
+  name: 'Teacher',
+  definition(t) {
+    t.model.user()
+    t.model.timetables()
   },
 })
 
@@ -60,15 +69,21 @@ export const createTimetable = extendType({
           required: true,
         }),
       },
-      resolve: async (root, { periods }, ctx) => {
-        const res = await ctx.db.timetable.create({
+      resolve: async (root, { periods }, { db, session }: Context) => {
+        const res = await db.timetable.create({
           data: {
+            creator: {
+              connect: {
+                userId: session.id,
+              },
+            },
             periods: {
               create: periods,
             },
           },
           select: {
             id: true,
+            creator: true,
             periods: {
               select: {
                 id: true,
