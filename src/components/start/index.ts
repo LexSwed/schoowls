@@ -1,3 +1,3 @@
 export { default as Timetable } from './timetable'
-export { default as Schedule } from './Schedule'
+export { default as Schedule } from './schedule'
 export * from './fragments'

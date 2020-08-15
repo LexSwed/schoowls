@@ -2,13 +2,13 @@ import React, { useRef, useEffect } from 'react'
 import { Grid, Box, Flex } from '@chakra-ui/core'
 import styled from '@emotion/styled'
 
-import Header from './Header'
-import { useEventListener } from '../../lib'
+import DaysHeader from './DaysHeader'
+import { useEventListener } from '../../../lib'
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const hours = [...Array(24).keys()]
 
-const WeekPlanner: React.FC = () => {
+const Schedule: React.FC = () => {
   const hoursBoxRef = useRef<HTMLDivElement>()
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const WeekPlanner: React.FC = () => {
 
   return (
     <Box width="600px">
-      <Header pl="40px" pr={3} />
+      <DaysHeader pl="40px" pr={3} />
       <ScrollView height="500px" overflow="scroll" templateColumns="40px repeat(7, 1fr)" pr={1}>
         <Box ref={hoursBoxRef}>
           {hours.map((hour) => (
@@ -75,7 +75,7 @@ const DayColumn: React.FC<{ day: string }> = ({ day }) => {
   )
 }
 
-export default WeekPlanner
+export default Schedule
 
 const ScrollView = styled(Grid)`
   &::-webkit-scrollbar {
