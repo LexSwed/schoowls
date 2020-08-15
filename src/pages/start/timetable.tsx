@@ -18,7 +18,7 @@ const TimetableStart = () => {
     })
 
     if (data) {
-      Router.push('/schedule')
+      Router.push('/start/schedule')
     }
 
     if (errors) {
