@@ -1,3 +1,9 @@
+declare module '*.gql' {
+  const documents: Record<string, import('graphql').DocumentNode>
+
+  export = documents
+}
+
 declare const User: import('@prisma/client').User
 
 interface ContextUser {

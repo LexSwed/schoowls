@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 const timetableFragment = gql`
-  fragment TimetableFragment on Timetable {
+  fragment Timetable_periods on Timetable {
     id
     periods {
       id
@@ -14,7 +14,11 @@ const timetableFragment = gql`
 export const readTimetables = gql`
   query timetables {
     timetables {
-      ...TimetableFragment
+      edges {
+        node {
+          ...Timetable_periods
+        }
+      }
     }
   }
   ${timetableFragment}
@@ -23,7 +27,7 @@ export const readTimetables = gql`
 export const createTimetableMutation = gql`
   mutation createTimetable($periods: [PeriodInput!]!) {
     createTimetable(periods: $periods) {
-      ...TimetableFragment
+      ...Timetable_periods
     }
   }
   ${timetableFragment}

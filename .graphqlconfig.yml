@@ -1,0 +1,7 @@
+projects:
+  app:
+    schemaPath: server/graphql/generated/schema.graphql
+    includes: ['src/**/*.graphql', 'src/**/*.gql', 'src/**/*.ts', 'src/**/*.tsx', 'src/**/*.js']
+    extensions:
+      endpoints:
+        default: http://localhost:3000/api/gql

@@ -1,8 +1,19 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "files.watcherExclude": {
-        "**/.git/objects/**": true,
-        "**/.git/subtree-cache/**": true,
-        "**/.hg/store/**": true
-    }
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.hg/store/**": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "eslint.format.enable": true,
+  "eslint.run": "onSave",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

@@ -1,16 +1,19 @@
 import React, { useRef, useEffect } from 'react'
 import { Grid, Box, Flex } from '@chakra-ui/core'
 import styled from '@emotion/styled'
+import { useQuery } from '@apollo/client'
 
 import DaysHeader from './DaysHeader'
 import { useEventListener } from '../../../lib'
+import { readTimetables } from '../../../graphql/timetable'
 
 const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const hours = [...Array(24).keys()]
 
 const Schedule: React.FC = () => {
   const hoursBoxRef = useRef<HTMLDivElement>()
-
+  const data = useQuery(readTimetables)
+  console.log(data)
   useEffect(() => {
     if (hoursBoxRef.current) {
       hoursBoxRef.current.children[7].scrollIntoView()
