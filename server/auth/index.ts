@@ -2,7 +2,7 @@ import type { IncomingMessage } from 'http'
 import type { NowRequest, NowResponse } from '@vercel/node'
 
 import { decryptToken } from './cookie'
-import { getUserDetails } from '../db'
+import { getUserDetails } from '../db/user'
 
 export { authorize } from './authorize'
 

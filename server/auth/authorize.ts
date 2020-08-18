@@ -3,7 +3,7 @@ import type { User } from '@prisma/client'
 
 import { magic } from './magic'
 import { prisma } from '../db'
-import { getUserDetails } from '../db'
+import { getUserDetails } from '../db/user'
 
 export const authorize = async (didToken: string, userDetails: UserDetailsFromFE) => {
   const metadata = await magic.users.getMetadataByToken(didToken)

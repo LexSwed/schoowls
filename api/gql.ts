@@ -1,23 +1,14 @@
-import { ApolloServer } from 'apollo-server-micro'
-import { withSession } from '../server/auth'
-import { schema, context } from '../server/graphql'
+// eslint-disable-next-line
+if (process.env.NODE_ENV === 'development') require('nexus').default.reset()
 
-const isProd = process.env.NODE_ENV === 'production'
+// eslint-disable-next-line
+const app = require('nexus').default
+// Require your nexus modules here.
+// Do not write them inline, since the Nexus API is typed `any` because of `require` import.
+require('../server/graphql')
+// eslint-disable-next-line
+const { withSession } = require('../server/auth')
 
-const apolloServer = new ApolloServer({
-  context,
-  schema,
-  tracing: !isProd,
-  introspection: !isProd,
-  playground: !isProd,
-})
+app.assemble()
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-}
-
-const handler = apolloServer.createHandler({ path: '/api/gql' })
-
-export default withSession(handler)
+export default withSession(app.server.handlers.graphql)

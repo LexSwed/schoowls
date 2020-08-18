@@ -1,40 +1,24 @@
-import { makeSchema, connectionPlugin } from '@nexus/schema'
-import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
-import { DateTime } from 'graphql-iso-date'
-
+import { settings, use } from 'nexus'
+import { prisma } from 'nexus-plugin-prisma'
 import path from 'path'
-import types from './schema'
-import { prisma } from '../db'
 
-export const schema = makeSchema({
-  types,
-  outputs: {
-    schema: path.resolve('./server/graphql/generated/schema.graphql'),
-    typegen: path.resolve('./server/graphql/generated/typings.d.ts'),
+import { prisma as instance } from '../db'
+
+import './context'
+import './user'
+import './timetable'
+
+use(prisma({ migrations: true, features: { crud: true }, client: { instance } }))
+
+// Nexus Settings
+// see: https://nexusjs.org/api/nexus/settings
+settings.change({
+  schema: {
+    generateGraphQLSDLFile: path.resolve('./generated'),
   },
-  plugins: [
-    nexusSchemaPrisma({
-      prismaClient: () => prisma,
-      experimentalCRUD: true,
-      scalars: {
-        DateTime: DateTime,
-      },
-    }),
-    connectionPlugin(),
-  ],
-  typegenAutoConfig: {
-    contextType: 'Context.Context',
-    sources: [
-      {
-        source: '@prisma/client',
-        alias: 'prisma',
-      },
-      {
-        source: require.resolve('./context'),
-        alias: 'Context',
-      },
-    ],
+  server: {
+    playground: process.env.NODE_ENV !== 'production',
+    path: '/api/gql',
+    cors: false,
   },
 })
-
-export * from './context'

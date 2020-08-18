@@ -1,5 +1,25 @@
 import { PrismaClient } from '@prisma/client'
 
-export const prisma = new PrismaClient()
+export let prisma: PrismaClient
 
-export * from './user'
+if (process.env.NODE_ENV !== 'development') {
+  prisma = new PrismaClient()
+} else {
+  if (!global['prisma']) {
+    global['prisma'] = new PrismaClient()
+  }
+
+  prisma = global['prisma']
+}
+
+export async function disconnect(): Promise<boolean> {
+  await prisma.disconnect()
+
+  return true
+}
+
+export async function connect(): Promise<boolean> {
+  await prisma.connect()
+
+  return true
+}

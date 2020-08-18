@@ -1,7 +1,6 @@
-import { extendType, objectType, arg, inputObjectType } from '@nexus/schema'
-import type { Context } from '../context'
+import { schema } from 'nexus'
 
-export const Period = objectType({
+schema.objectType({
   name: 'Period',
   definition(t) {
     t.model.id()
@@ -10,7 +9,7 @@ export const Period = objectType({
   },
 })
 
-export const Teacher = objectType({
+schema.objectType({
   name: 'Teacher',
   definition(t) {
     t.model.user()
@@ -18,7 +17,7 @@ export const Teacher = objectType({
   },
 })
 
-export const Timetable = objectType({
+schema.objectType({
   name: 'Timetable',
   definition(t) {
     t.model.id()
@@ -27,7 +26,23 @@ export const Timetable = objectType({
   },
 })
 
-export const periodInput = inputObjectType({
+schema.extendType({
+  type: 'Query',
+  definition(t) {
+    t.connection('timetables', {
+      type: 'Timetable',
+      nodes(root, args, { db, session }) {
+        return db.timetable.findMany({
+          where: {
+            teacherId: session.id,
+          },
+        })
+      },
+    })
+  },
+})
+
+schema.inputObjectType({
   name: 'PeriodInput',
   definition(t) {
     t.int('duration', {
@@ -41,35 +56,19 @@ export const periodInput = inputObjectType({
   },
 })
 
-export const getTimetable = extendType({
-  type: 'Query',
-  definition(t) {
-    t.connectionField('timetables', {
-      type: Timetable,
-      nodes(root, args, { db, session }) {
-        return db.timetable.findMany({
-          where: {
-            teacherId: session.id,
-          },
-        })
-      },
-    })
-  },
-})
-
-export const createTimetable = extendType({
+schema.extendType({
   type: 'Mutation',
   definition(t) {
     t.field('createTimetable', {
-      type: Timetable,
+      type: 'Timetable',
       args: {
-        periods: arg({
-          type: periodInput,
+        periods: schema.arg({
+          type: 'PeriodInput',
           list: true,
           required: true,
         }),
       },
-      resolve: async (root, { periods }, { db, session }: Context) => {
+      resolve: async (root, { periods }, { db, session }) => {
         const res = await db.timetable.create({
           data: {
             creator: {

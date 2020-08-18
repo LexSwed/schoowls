@@ -1,4 +1,4 @@
-import { UserWhereUniqueInput, User } from '@prisma/client'
+import { UserWhereUniqueInput } from '@prisma/client'
 import { prisma } from './'
 
 export function getUserDetails(where: UserWhereUniqueInput) {

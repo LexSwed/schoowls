@@ -1,13 +1,11 @@
+import React from 'react'
 import { AppPropsType } from 'next/dist/next-server/lib/utils'
-import Head from 'next/head'
+// import Head from 'next/head'
+import { CSSReset } from '@chakra-ui/core'
 
-import { ThemeProvider, CSSReset } from '@chakra-ui/core'
-import { ApolloProvider } from '@apollo/client'
-import { useApollo } from '../lib/apollo'
+import AppProviders from '../components/AppProviders'
 
 function AppWrapper({ Component, pageProps }: AppPropsType) {
-  const apolloClient = useApollo(pageProps.initialApolloState)
-
   return (
     <>
       {/* <Head>
@@ -20,12 +18,10 @@ if (!document.cookie.includes('authed') && !window.location.href.includes('/logi
           }}
         />
       </Head> */}
-      <ThemeProvider>
+      <AppProviders>
         <CSSReset />
-        <ApolloProvider client={apolloClient}>
-          <Component {...pageProps} />
-        </ApolloProvider>
-      </ThemeProvider>
+        <Component {...pageProps} />
+      </AppProviders>
     </>
   )
 }
