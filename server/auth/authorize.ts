@@ -8,7 +8,7 @@ import { getUserDetails } from '../db/user'
 export const authorize = async (didToken: string, userDetails: UserDetailsFromFE) => {
   const metadata = await magic.users.getMetadataByToken(didToken)
 
-  let existingUser = await prisma.user.findOne({
+  const existingUser = await prisma.user.findOne({
     where: {
       email: metadata.email,
     },

@@ -1,6 +1,5 @@
 // eslint-disable-next-line
-if (process.env.NODE_ENV === 'development') require('nexus').default.reset()
-
+if (process.env.NODE_ENV !== 'production') require('nexus').default.reset()
 // eslint-disable-next-line
 const app = require('nexus').default
 // Require your nexus modules here.

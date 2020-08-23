@@ -9,15 +9,18 @@ import './user'
 import './timetable'
 
 use(prisma({ migrations: true, features: { crud: true }, client: { instance } }))
-
 // Nexus Settings
 // see: https://nexusjs.org/api/nexus/settings
 settings.change({
   schema: {
-    generateGraphQLSDLFile: path.resolve('./generated'),
+    generateGraphQLSDLFile: path.resolve('./generated/schema.graphql'),
   },
   server: {
-    playground: process.env.NODE_ENV !== 'production',
+    playground: {
+      settings: {
+        'request.credentials': 'include',
+      },
+    },
     path: '/api/gql',
     cors: false,
   },

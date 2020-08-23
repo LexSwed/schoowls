@@ -36,12 +36,11 @@ export const withSession = (handler: (req: NowRequest, res: NowResponse) => Prom
   res: NowResponse
 ) => {
   try {
-    const token = decryptToken(req)
-
-    ;(req as any).session = token
+    ;(req as any).session = getSession(req)
 
     return handler(req, res)
   } catch (error) {
+    console.log(error)
     res.writeHead(301, { Location: `/login?source=${req.url}` })
     res.end()
   }
