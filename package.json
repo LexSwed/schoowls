@@ -34,7 +34,7 @@
     "date-fns": "^2.15.0",
     "emotion-theming": "^10.0.27",
     "jsonwebtoken": "^8.5.1",
-    "magic-sdk": "^2.4.8",
+    "magic-sdk": "^2.5.0",
     "next": "^9.5.2",
     "nexus": "^0.26.1",
     "nexus-plugin-prisma": "^0.17.0",
@@ -55,11 +55,11 @@
     "@types/jest": "^26.0.10",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.6.0",
-    "@types/react": "^16.9.46",
+    "@types/react": "^16.9.47",
     "@types/react-dom": "^16.9.8",
-    "@typescript-eslint/eslint-plugin": "^3.9.1",
-    "@typescript-eslint/parser": "^3.9.1",
-    "@vercel/node": "^1.7.3",
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
+    "@vercel/node": "^1.8.0",
     "babel-plugin-emotion": "^10.0.33",
     "concurrently": "^5.3.0",
     "eslint": "^7.7.0",
@@ -67,9 +67,9 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
     "jest": "^26.4.2",
-    "prettier": "^2.0.5",
+    "prettier": "^2.1.0",
     "ts-jest": "^26.2.0",
     "typescript": "^4.0.2",
-    "vercel": "^19.2.0"
+    "vercel": "^20.0.0"
   }
 }
