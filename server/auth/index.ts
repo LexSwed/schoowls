@@ -26,9 +26,7 @@ export function getSession(req: IncomingMessage) {
 export async function getUserFromRequest(req: IncomingMessage | NowRequest) {
   const data = decryptToken(req)
 
-  const user = await getUserDetails({ email: data.email })
-
-  return user
+  return await getUserDetails({ email: data.email })
 }
 
 export const withSession = (handler: (req: NowRequest, res: NowResponse) => Promise<any>) => async (
